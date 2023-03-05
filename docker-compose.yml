@@ -1,31 +1,41 @@
 version: "3.1"
 services:
 
-    mariadb:
-      container_name: mariadb-server
-      hostname: mariadb-server
-      restart: always
-      image: mariadb:latest
-      expose:
-        - "3306"
-      ports:
-        - "3306:3306"
-      volumes:
-        - ./database:/docker-entrypoint-initdb.d
-      env_file:
-        - variables.env
+  mariadb:
+    container_name: mariadb-server
+    hostname: mariadb-server
+    restart: always
+    image: mariadb:latest
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
+    env_file:
+      - variables.env
 
-    app:
-      container_name: phalcon-server
-      hostname: phalcon-server
-      build: docker/app
-      restart: always
-      ports:
-        - "80:80"
-      volumes:
-        - ./application:/var/www/html
-      depends_on:
-        - mariadb
+  app:
+    container_name: phalcon-server
+    hostname: phalcon-server
+    build: docker/app
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./application:/var/www/html
+    depends_on:
+      - mariadb
+
+  phpmyadmin:
+    container_name: phalcon-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    restart: "no"
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: "mariadb"
+      PMA_USER: "root"
+      PMA_PASSWORD: "pawnshop_root_password"
+      UPLOAD_LIMIT: 256M
 
       
 

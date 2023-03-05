@@ -9,8 +9,8 @@ defined('APP_PATH') || define('APP_PATH', BASE_PATH . '/app');
 return new \Phalcon\Config([
     'database' => [
         'adapter'     => 'Mysql',
-        'host'        => 'prasertrat.ddns.net',
-        'port'        => '89',
+        'host'        => 'mariadb-server',
+        'port'        => '3306',
         'username'    => 'root',
         'password'    => 'pawnshop_root_password',
         'dbname'      => 'pawn_db_new',
