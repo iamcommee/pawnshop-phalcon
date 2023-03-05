@@ -22,7 +22,7 @@ $(function () {
     var options = {
         chart: {
             renderTo: 'chart',
-            type: 'line',
+            type: 'column',
             style: {
                 fontFamily: 'Sarabun'
             }

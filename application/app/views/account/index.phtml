@@ -35,11 +35,13 @@
                         <th class="sum">ดอกจากการไถ่</th>
                         <th class="sum">กำไร</th>
                         <th>รายการมัดจำ</th>
+                        <th>รายการตั้งขาย</th>
                     </tr>
                 </thead>
                 <tfoot class="text-center">
                     <tr>
                         <th>รวมเป็นเงิน</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -168,6 +170,24 @@
                                 if($date->deposit_transaction){
                                     foreach($date->deposit_transaction as $transaction){ 
                                         echo $transaction->agreement_number.' : '.$transaction->product_name.' : '.number_format($transaction->value)."<br>";
+                                        $sum = $sum + $transaction->value;
+                                    }    
+                                }
+                                if($sum != 0){
+                                    echo '<hr>';
+                                    echo 'รวมเป็นเงิน : '.number_format($sum);
+                                }else{
+                                    echo '0';
+                                } 
+                                
+                            ?>
+                        </td>
+                        <td>
+                            <?php 
+                                $sum = 0;
+                                if($date->selling_transaction){
+                                    foreach($date->selling_transaction as $transaction){ 
+                                        echo $transaction->agreement_number.' : '.$transaction->product_name.' : '.number_format($transaction->product_value).' : '.number_format($transaction->value)."<br>";
                                         $sum = $sum + $transaction->value;
                                     }    
                                 }

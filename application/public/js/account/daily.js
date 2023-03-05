@@ -62,17 +62,26 @@ $(function () {
                 sLast: "หน้าสุดท้าย"
             },
         },
-        // dom: "<'row'<'col-sm-12 col-md-6'B><'col-sm-12 col-md-6'f>>" +
-        //     "<'row'<'col-sm-12'tr>>" +
-        //     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-        // buttons: [{
-        //     extend: 'excel',
-        //     text: 'ดาวน์โหลดตาราง',
-        //     className: 'btn btn-custom btn-outline-primary x-rounded',
-        //     exportOptions: {
-        //         columns: [0, 1, 2, 3, 4, 5, 6]
-        //     }
-        // }],
+        dom: "<'row'<'col-sm-12 col-md-6'B><'col-sm-12 col-md-6'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        buttons: [{
+            title: '',
+            extend: 'print',
+            footer: true,
+            text: 'ดาวน์โหลดตาราง',
+            className: 'btn btn-custom btn-outline-primary x-rounded',
+            exportOptions: {
+                columns: [0, 1, 2, 3, 4, 5, 6]
+            },
+            customize: function ( win ) {
+                $(win.document.body).find( 'table' )
+                .css( 'color', 'black' );
+
+                $(win.document.body).find( 'td' )
+                .css( 'border', '2px solid black' );
+            },
+        }],
         footerCallback: function () {
             var api = this.api();
             var pawn_value_counter = 0;

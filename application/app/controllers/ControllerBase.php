@@ -77,7 +77,7 @@ class ControllerBase extends Controller
         $highchartCollection->addJs('highcharts/code/highcharts.js');
         $highchartCollection->addJs('highcharts/code/modules/drilldown.js');
 
-        // error_reporting(0); // disable error php
+        error_reporting(0); // disable error php
     }
 
     public function getSecretkey(){

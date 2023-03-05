@@ -345,8 +345,8 @@
 <html>
 <script type="text/javascript">
     
-    window.onload = function(){ 
-        window.print();
+    window.print();
+    window.onafterprint = function(event) {
         window.close();
     };
 

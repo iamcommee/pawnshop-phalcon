@@ -40,6 +40,7 @@ $(function () {
             className: "btn btn-custom btn-outline-primary x-rounded",
             text: "ดาวน์โหลดตาราง",
             exportOptions: {
+                columns: [0, 1, 2, 3, 4, 5, 6, 7],
                 // opitional
                 format: {
                     body: function(data) {

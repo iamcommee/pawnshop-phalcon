@@ -133,7 +133,3 @@ class WaitingController extends ControllerBase
         }
     }
 }
-
-
-
-

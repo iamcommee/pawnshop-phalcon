@@ -577,7 +577,7 @@ class PaymentController extends ControllerBase
                         $new_transaction->product_id = $product_id; 
                         $new_transaction->start_date = $max_date_transaction->max_start_date;
                         $new_transaction->end_date = $max_date_transaction->max_end_date;
-                        $new_transaction->status = 'แยกขาย';
+                        $new_transaction->status = 'แยกสินค้า';
                         $new_transaction->uuid =  $uuid;
                         $new_transaction->note = $note;
                         if ($new_transaction->save() === false) {

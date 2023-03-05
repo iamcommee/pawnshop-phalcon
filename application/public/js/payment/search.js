@@ -1,5 +1,14 @@
 $(function () {
 
+  $('.btn-scroll-to-top').click(function () {
+    $(document).scrollTop(0);
+    return false;
+  });
+
+  $('.btn-scroll-to-bottom').click(function () {
+      $(document).scrollTop($(document).height());
+      return false;
+  });
 
   $('.status').each(function () {
     var text = $(this).text().trim();
@@ -24,8 +33,6 @@ $(function () {
     }
 
   });
-
-
 
   $('.transaction_date').datepicker({
     format: "DD/MM/YYYY",

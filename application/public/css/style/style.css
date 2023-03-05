@@ -36,9 +36,9 @@ i {
     font-weight: bold;
 }
 
-/* table a {
-    color: black !important;
-} */
+table a {
+    color: blue !important;
+}
 
 .color-black {
     color: black !important;

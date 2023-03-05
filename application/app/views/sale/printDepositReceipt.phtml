@@ -192,8 +192,8 @@
 </body>
 <html>
 <script type="text/javascript">
-     window.onload = function() {
-       window.print();
-       window.location='<?php echo $this->url->get('deposit/')?>';
-     }
+    window.print();
+    window.onafterprint = function(event) {
+        window.location.href = '<?php echo $this->url->get('deposit/')?>';
+    };
 </script>

@@ -78,7 +78,7 @@ class AccountController extends ControllerBase
                 ON T.uuid = A.uuid
                 WHERE A.transaction_date = :transaction_date:
                 GROUP BY T.uuid
-                ORDER BY T.transaction_id ASC',
+                ORDER BY T.agreement_number ASC',
                 [
                     'transaction_date' => $date->transaction_date,
                 ]
@@ -88,6 +88,7 @@ class AccountController extends ControllerBase
             unset($withdraw_transaction);
             unset($sale_transaction);
             unset($deposit_transaction);
+            unset($selling_transaction);
             foreach($transactions as $transaction){ 
                 if($transaction->T->status == 'ฝาก' || $transaction->T->status == 'ซื้อเข้า' || $transaction->T->status == 'เพิ่มเงิน' || $transaction->T->status == 'เพิ่มสินค้า'){
                     $pawn_transaction[] = array(
@@ -131,6 +132,15 @@ class AccountController extends ControllerBase
                         'product_name'      => $transaction->T->product->name,
                         'value'             => $transaction->A->value,
                     );
+                }else if ($transaction->T->status == 'ตั้งขาย' || $transaction->T->status == 'ตั้งขายกรณีพิเศษ'){
+                    $transaction_status = 'ตั้งขาย';
+                    $selling_transaction[] = array(
+                        'agreement_number'  => $transaction->T->agreement->agreement_number,
+                        'status'            => $transaction_status,
+                        'product_name'      => $transaction->T->product->name,
+                        'product_value'     => $transaction->T->product->value,
+                        'value'             => $transaction->A->value,
+                    );
                 }
             }
 
@@ -141,6 +151,7 @@ class AccountController extends ControllerBase
                 'withdraw_transaction' => $withdraw_transaction,
                 'sale_transaction'     => $sale_transaction,
                 'deposit_transaction'  => $deposit_transaction,
+                'selling_transaction'  => $selling_transaction,
             );
         }
 
