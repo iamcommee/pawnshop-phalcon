@@ -3,7 +3,7 @@ services:
 
   mariadb:
     container_name: phalcon-db
-    restart: always
+    restart: 'always'
     image: mariadb:10
     expose:
       - '3306'
@@ -19,7 +19,7 @@ services:
   app:
     container_name: phalcon-app
     build: .
-    restart: always
+    restart: 'always'
     ports:
       - '80:80'
     volumes:
@@ -30,7 +30,7 @@ services:
   phpmyadmin:
     container_name: phalcon-phpmyadmin
     image: phpmyadmin/phpmyadmin
-    restart: no
+    restart: 'no'
     ports:
       - '8080:80'
     environment:
