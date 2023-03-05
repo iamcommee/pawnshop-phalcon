@@ -2,24 +2,26 @@ version: "3.1"
 services:
 
   mariadb:
-    container_name: mariadb-server
-    hostname: mariadb-server
+    container_name: phalcon-db
     restart: always
-    image: mariadb:latest
+    image: mariadb:10
     expose:
-      - "3306"
+      - '3306'
     ports:
-      - "3306:3306"
-    env_file:
-      - variables.env
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: 'pawnshop'
+      MYSQL_ROOT_PASSWORD: 'pawnshop_root_password'
+      MYSQL_USER: 'pawnshop_user'
+      MYSQL_PASSWORD: 'pawnshop_user_password'
+      TZ: 'Asia/Bangkok'
 
   app:
-    container_name: phalcon-server
-    hostname: phalcon-server
-    build: docker/app
+    container_name: phalcon-app
+    build: .
     restart: always
     ports:
-      - "80:80"
+      - '80:80'
     volumes:
       - ./application:/var/www/html
     depends_on:
@@ -28,14 +30,14 @@ services:
   phpmyadmin:
     container_name: phalcon-phpmyadmin
     image: phpmyadmin/phpmyadmin
-    restart: "no"
+    restart: no
     ports:
-      - "8080:80"
+      - '8080:80'
     environment:
-      PMA_HOST: "mariadb"
-      PMA_USER: "root"
-      PMA_PASSWORD: "pawnshop_root_password"
-      UPLOAD_LIMIT: 256M
+      PMA_HOST: 'mariadb'
+      PMA_USER: 'root'
+      PMA_PASSWORD: 'pawnshop_root_password'
+      UPLOAD_LIMIT: '256M'
 
       
 
