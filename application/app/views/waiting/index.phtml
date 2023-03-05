@@ -1,0 +1,92 @@
+<div class="wrap">
+<div class="container-fluid">
+    <div class="row">
+        <div class="waiting_table_wrap col-md-12 d-none">
+            <table id="waiting_table" class="table table-bordered table-hover">
+                <thead class="text-center">
+                    <tr>
+                        <th>เลขที่สัญญา</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>วันคิดดอก</th>
+                        <th>วันส่งดอก</th>
+                        <th>ราคา</th>
+                        <th>หมายเหตุ</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tfoot class="text-center">
+                  <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th></th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </tfoot>
+                <tbody class="text-center"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+<div class="spinner">
+  <div class="rect1"></div>
+  <div class="rect2"></div>
+  <div class="rect3"></div>
+  <div class="rect4"></div>
+  <div class="rect5"></div>
+</div>
+<!-- moveToSaleModal -->
+<div class="modal fade" id="moveToSaleModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form class="moveToSaleForm" action="#">
+            <input type="hidden" name="product_id" class="product_id" value="">
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+              <div class="col-sm-6">
+                <input type="text" name="transaction_date" class="custom-input transaction_date">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+              <div class="col-sm-6">
+                <input type="text" name="transaction_time" class="custom-input transaction_time">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">ราคาตั้งขาย</label>
+              <div class="col-sm-6">
+                <input type="number" name="sale_value" class="custom-input sale_value">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+              <div class="col-sm-6">
+                <input type="text" name="note" class="custom-input note">
+              </div>
+            </div>
+            <br>
+            <br>
+            <button type="submit" class="confirm-move-to-sale btn btn-custom btn-outline-primary x-rounded w-100">
+                ยืนยันตั้งขายสินค้า
+            </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<?php $this->assets->outputJs(); ?>

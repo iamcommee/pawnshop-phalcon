@@ -1,0 +1,145 @@
+<div class="wrap">
+    <div class="container">
+        <form action="edit-owner-information" method="POST">
+            <div class="row">
+                <div class="col-12 col-sm-12 ">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <span style="font-size:22px;">ตั้งค่ารายละเอียดในสัญญา</span>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-custom btn-outline-primary x-rounded x-fixed-width">บันทึก</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <!-- Owner Setting -->
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">ชื่อร้าน</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="storename" class="custom-input" value="<?php echo $storename; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">ชื่อ</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="firstname" class="custom-input" value="<?php echo $firstname; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">นามสกุล</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="lastname" class="custom-input" value="<?php echo $lastname; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">โทรศัพท์</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="tel" class="custom-input" value="<?php echo $tel; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">มือถือ</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="m_tel" class="custom-input" value="<?php echo $m_tel; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">บ้านเลขที่</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="house_no" class="custom-input" value="<?php echo $house_no; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">หมู่ที่</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="village_no" class="custom-input" value="<?php echo $village_no; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label custom-label">ดอกเบี้ยต่ำสุด</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="low_interest_rate" class="custom-input" value="<?php echo $low_interest_rate; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label custom-label">ยังไม่เคยต่อดอกเลทได้</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="min_due_date" class="custom-input" value="<?php echo $min_due_date; ?>">
+                        </div>
+                         <label class="col-sm-1 col-form-label custom-label">วัน</label>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label custom-label">ยอดเงินมากกว่า</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="value_for_high_interest_rate" class="custom-input" value="<?php echo $value_for_high_interest_rate; ?>">
+                        </div>
+                        <label class="col-sm-5 col-form-label custom-label">ใช้ดอกเบี้ยสูงสุดในการคิดดอกเบี้ย</label>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">ซอย</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="lane" class="custom-input" value="<?php echo $lane; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">ถนน</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="road" class="custom-input" value="<?php echo $road; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">ตำบล</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="sub_district" class="custom-input" value="<?php echo $sub_district; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">อำเภอ</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="district" class="custom-input" value="<?php echo $district; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">จังหวัด</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="province" class="custom-input" value="<?php echo $province; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">ไปษณีย์</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="zip_code" class="custom-input" value="<?php echo $zip_code; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label custom-label">ไลน์ไอดี</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="line" class="custom-input" value="<?php echo $line; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label custom-label">ดอกเบี้ยสูงสุด</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="high_interest_rate" class="custom-input" value="<?php echo $high_interest_rate; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label custom-label">เคยต่อดอกเลทได้</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="max_due_date" class="custom-input" value="<?php echo $max_due_date; ?>">
+                        </div>
+                        <label class="col-sm-1 col-form-label custom-label">วัน</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<?php $this->assets->outputJs(); ?>

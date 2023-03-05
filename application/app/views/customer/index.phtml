@@ -1,0 +1,92 @@
+<div class="wrap">
+<div class="container-fluid">
+    <div class="row">
+        <div class="customer_table_wrap col-md-12 d-none">
+            <table id="customer_table" class="table table-bordered table-hover" cellspacing="0" width="100%">
+                <thead class="text-center">
+                    <tr>
+                        <th>เลขที่บัตรประชาชน</th>
+                        <th>ชื่อ</th>
+                        <th>นามสกุล</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>    
+                    </tr>
+                </tfoot>
+                <tbody class="text-center"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+<div class="spinner">
+  <div class="rect1"></div>
+  <div class="rect2"></div>
+  <div class="rect3"></div>
+  <div class="rect4"></div>
+  <div class="rect5"></div>
+</div>
+<div class="modal fade" id="customerModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">แก้ไข
+                    <!--  -->
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <form class="customerForm" action="#">
+                    <input type="hidden" name="customer_id" class="customer_id" value="">
+                    <div class="form-group row">
+                            <label class="col-sm-6 col-form-label custom-label">เลขที่บัตรประชาชน</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="idcard" class="idcard custom-input">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-6 col-form-label custom-label">ชื่อ</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="firstname" class="firstname custom-input">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-6 col-form-label custom-label">นามสกุล</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="lastname" class="lastname custom-input">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-6 col-form-label custom-label">ไฟล์รูปภาพ</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="image" class="image custom-input">
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <button type="submit" class="confirm-edit-customer-information btn x-rounded btn-custom btn-outline-primary w-100">
+                                    <b>ยืนยันการแก้ไข</b>
+                                </button>
+                            </div>
+                            <!-- <div class="col-sm-6">
+                                <button type="button" class="confirm-delete-customer-information btn x-rounded btn-custom btn-outline-primary w-100">
+                                    <b>ลบข้อมูลลูกค้า</b>
+                                </button>
+                            </div> -->
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?php $this->assets->outputJs();?>

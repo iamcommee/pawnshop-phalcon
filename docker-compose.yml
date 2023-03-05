@@ -1,0 +1,31 @@
+version: "3.1"
+services:
+
+    mariadb:
+      container_name: mariadb-server
+      hostname: mariadb-server
+      restart: always
+      image: mariadb:latest
+      expose:
+        - "3306"
+      ports:
+        - "3306:3306"
+      volumes:
+        - ./database:/docker-entrypoint-initdb.d
+      env_file:
+        - variables.env
+
+    app:
+      container_name: phalcon-server
+      hostname: phalcon-server
+      build: docker/app
+      restart: always
+      ports:
+        - "80:80"
+      volumes:
+        - ./application:/var/www/html
+      depends_on:
+        - mariadb
+
+      
+

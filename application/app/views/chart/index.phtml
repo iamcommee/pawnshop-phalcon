@@ -1,0 +1,68 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="chart_wrap col-md-12 d-none">
+            <form class="d-flex justify-content-center" action="" method="POST">
+                <span class="col-1 w-100 text-center" style="top:10px;">  </span>
+                <div class="col-2 w-100">
+                    <select class="custom-select-input text-center start_month" name="start_month">
+                        <option selected="selected" value="<?php echo $value_start_month; ?>"><?php echo $start_month.' - ปัจจุบัน'; ?></option>
+                        <option value="1">มกราคม</option>
+                        <option value="2">กุมภาพันธ์</option>
+                        <option value="3">มีนาคม</option>
+                        <option value="4">เมษายน</option>
+                        <option value="5">พกฤษภาคม</option>
+                        <option value="6">มิถุนายน</option>
+                        <option value="7">กรกฏาคม</option>
+                        <option value="8">สิงหาคม</option>
+                        <option value="9">กันยายน</option>
+                        <option value="10">ตุลาคม</option>
+                        <option value="1">พฤษจิกายน</option>
+                        <option value="12">ธันวาคม</option>
+                    </select>
+                </div>
+                <span class="col-1 w-100 text-center" style="top:10px;"> ถึง </span>
+                <div class="col-2 w-100">
+                    <select class="custom-select-input text-center end_month" name="end_month">
+                        <option selected="selected" value="<?php echo $value_end_month; ?>"><?php echo $end_month.' - ปัจจุบัน'; ?></option>
+                        <option value="1">มกราคม</option>
+                        <option value="2">กุมภาพันธ์</option>
+                        <option value="3">มีนาคม</option>
+                        <option value="4">เมษายน</option>
+                        <option value="5">พกฤษภาคม</option>
+                        <option value="6">มิถุนายน</option>
+                        <option value="7">กรกฏาคม</option>
+                        <option value="8">สิงหาคม</option>
+                        <option value="9">กันยายน</option>
+                        <option value="10">ตุลาคม</option>
+                        <option value="1">พฤษจิกายน</option>
+                        <option value="12">ธันวาคม</option>
+                    </select>
+                </div>
+                <span class="col-1 w-100 text-center" style="top:10px;"> ปี </span>
+                <div class="col-2 w-100">
+                    <select class="custom-select-input text-center year" name="year"">
+                        <option selected="selected" value="<?php echo $last_year; ?>"><?php echo $last_year; ?></option>
+                        <?php $years = json_decode($year_json);
+                                foreach ($years as $year) { 
+                        ?>
+                        <option value="<?php echo $year->year; ?>"><?php echo $year->year; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <span class="col-1 w-100 text-center"> <button class="confirm-search btn btn-circle btn-outline-primary x-rounded">&nbsp;&nbsp;&nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;&nbsp;</button> </span>
+                <span class="col-1 w-100 text-center"> <button type="button" class="btn btn-circle btn-outline-primary x-rounded" id="column">&nbsp;&nbsp;&nbsp;<i class="fas fa-chart-bar"></i>&nbsp;&nbsp;&nbsp;</button> </span>
+                <span class="col-1 w-100 text-center"> <button type="button" class="btn btn-circle btn-outline-primary x-rounded" id="line">&nbsp;&nbsp;&nbsp;<i class="fas fa-chart-line"></i>&nbsp;&nbsp;&nbsp;</button> </span>
+            </form>
+            <br>
+            <div id="chart" style="width:100%; height:600px;"></div>
+        </div>
+        <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+        </div>
+    </div>
+</div>
+<?php $this->assets->outputJs();?>

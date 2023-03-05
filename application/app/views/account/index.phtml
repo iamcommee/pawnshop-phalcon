@@ -1,0 +1,197 @@
+<?php 
+     $temp_start_date = $start_date;
+     $temp_start_date = str_replace('-', '/', $temp_start_date);
+     $temp_start_date = date('d/n/Y',strtotime($temp_start_date));
+
+     $temp_end_date = $end_date;
+     $temp_end_date = str_replace('-', '/', $temp_end_date);
+     $temp_end_date = date('d/n/Y',strtotime($temp_end_date));
+?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="account_table_wrap col-md-12 d-none">
+                <form class="d-flex justify-content-center" action="" method="POST">
+                    <span class="col-1 w-100 text-center" style="top:10px;"> ค้นหาวันที่ </span>
+                    <div class="col-2 w-100">
+                        <input type="text" class="custom-input-extra text-center" id="start_date" name="start_date" value="<?php echo $temp_start_date; ?>"
+                        required>
+                    </div>
+                    <span class="col-1 w-100 text-center" style="top:10px;"> ถึง </span>
+                    <div class="col-2 w-100">
+                        <input type="text" class="custom-input-extra text-center" id="end_date" name="end_date" value="<?php echo $temp_end_date; ?>"
+                        required>
+                    </div>
+                    <span class="col-1 w-100 text-center"> <button class="btn btn-circle btn-outline-primary x-rounded">&nbsp;&nbsp;&nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;&nbsp;</button> </span>
+                </form>
+                <br>
+            <table id="account_table" class="table table-bordered" cellspacing="0" width="100%">
+                <thead class="text-center">
+                    <tr>
+                        <th>วันที่</th>
+                        <th class="sum">รายการเข้า</th>
+                        <th class="sum">รายการออก</th>
+                        <th>รายการขาย</th>
+                        <th class="sum">ดอกจากการต่อ</th>
+                        <th class="sum">ดอกจากการไถ่</th>
+                        <th class="sum">กำไร</th>
+                        <th>รายการมัดจำ</th>
+                    </tr>
+                </thead>
+                <tfoot class="text-center">
+                    <tr>
+                        <th>รวมเป็นเงิน</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+                <tbody class="text-center">
+                <?php 
+                    $dates = json_decode($date_json); 
+                    if($dates){
+                    foreach($dates as $date){
+                ?>
+                    <tr>
+                        <td>
+                          <?php echo $date->date; ?>
+                        </td>                        
+                        <td>
+                            <?php
+                                $sum = 0;
+                                if($date->pawn_transaction){
+                                    foreach($date->pawn_transaction as $transaction){ 
+                                        echo $transaction->agreement_number.' '.$transaction->transaction_status.' : '.number_format($transaction->value)."<br>"; 
+                                        $sum = $sum + $transaction->value;
+                                    }
+                                }
+                                if($sum != 0){
+                                    echo '<hr>';
+                                    echo 'รวมเป็นเงิน : '.number_format($sum);
+                                }else{
+                                    echo '0';
+                                } 
+                            ?>
+                        </td>
+                        <td>
+                            <?php 
+                                $sum = 0;
+                                if($date->withdraw_transaction){
+                                    foreach($date->withdraw_transaction as $transaction){ 
+                                        echo $transaction->agreement_number.' '.$transaction->transaction_status.' : '.number_format($transaction->principal)."<br>";
+                                        $sum = $sum + $transaction->principal;
+                                    }
+                                }
+                                if($sum != 0){
+                                    echo '<hr>';
+                                    echo 'รวมเป็นเงิน : '.number_format($sum);
+                                }else{
+                                    echo '0';
+                                } 
+                            ?>
+                        </td>
+                        <td>
+                            <?php 
+                                $sum_product_value = 0;
+                                $sum_sale_value = 0;
+                                if($date->sale_transaction){
+                                    foreach($date->sale_transaction as $transaction){
+                                        echo $transaction->agreement_number.' : '.$transaction->product_name.' : '.number_format($transaction->product_value).' : '.number_format($transaction->value)."<br>";
+                                        $sum_product_value = $sum_product_value + $transaction->product_value;
+                                        $sum_sale_value = $sum_sale_value + $transaction->value;
+                                    } 
+                                }
+                                if($sum_product_value != 0){
+                                    echo '<hr>';
+                                    echo 'รวมเป็นเงิน : '.number_format($sum_product_value).' : '.number_format($sum_sale_value);
+                                }else{
+                                    echo '0';
+                                }
+                            ?>
+                        </td>
+                        <td>
+                            <?php 
+                                $sum = 0;
+                                if($date->interest_transaction){
+                                    foreach($date->interest_transaction as $transaction){ 
+                                        echo $transaction->agreement_number.' : '.number_format($transaction->value)."<br>";
+                                        $sum = $sum + $transaction->value;
+                                    }    
+                                }
+                                if($sum != 0){
+                                    echo '<hr>';
+                                    echo 'รวมเป็นเงิน : '.number_format($sum);
+                                }else{
+                                    echo '0';
+                                }
+                            ?>
+                        </td>
+                        <td>
+                            <?php 
+                                $sum = 0;
+                                if($date->withdraw_transaction){
+                                    foreach($date->withdraw_transaction as $transaction){ 
+                                        echo $transaction->agreement_number.' : '.number_format($transaction->value)."<br>";
+                                        $sum = $sum + $transaction->value;
+                                    }    
+                                }
+                                if($sum != 0){
+                                    echo '<hr>';
+                                    echo 'รวมเป็นเงิน : '.number_format($sum);
+                                }else{
+                                    echo '0';
+                                } 
+                                
+                            ?>
+                        </td>
+                        <td>
+                            <?php 
+                                $profit = 0;
+                                if($date->sale_transaction){
+                                    foreach($date->sale_transaction as $transaction){ 
+                                        $profit = $profit + ($transaction->value - $transaction->product_value);
+                                    }
+                                }
+                                if($profit != 0){
+                                    echo number_format($profit);
+                                }else{
+                                    echo '0';
+                                }
+                            ?>
+                        </td>
+                        <td>
+                            <?php 
+                                $sum = 0;
+                                if($date->deposit_transaction){
+                                    foreach($date->deposit_transaction as $transaction){ 
+                                        echo $transaction->agreement_number.' : '.$transaction->product_name.' : '.number_format($transaction->value)."<br>";
+                                        $sum = $sum + $transaction->value;
+                                    }    
+                                }
+                                if($sum != 0){
+                                    echo '<hr>';
+                                    echo 'รวมเป็นเงิน : '.number_format($sum);
+                                }else{
+                                    echo '0';
+                                } 
+                                
+                            ?>
+                        </td>
+                    </tr>
+                <?php } } ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+        </div>
+    </div>
+</div>
+<?php $this->assets->outputJs(); ?>

@@ -1,0 +1,183 @@
+<html>
+<head>
+    <title>
+       บิลเงินสด
+    </title>
+    <?php 
+        $this->assets->outputCss();  
+    ?>
+</head>
+
+<body class="A4">
+    <section class="sheet padding-5mm">
+        <p style="text-align: center; font-size:20px;">บิลเงินสด สำหรับลูกค้า
+        </p>
+        <p style="text-align: center;">
+            <span>วันที่ขาย</span>
+            <input type="text" name="transaction_date" class="transaction_date" value="<?php echo $transaction_date; ?>" disabled>
+        </p>
+        <!-- <p style="text-align: center;"></p> -->
+        <p style="text-align: center;">
+            โทรศัพท์ <?php echo $tel; ?> , <?php echo $m_tel; ?> , ไลน์ : <?php echo $line; ?>
+        </p>
+        <div class="table">
+            <table id="sale_list" class="table table-bordered" style="font-size:10.95px !important;">
+                <thead>
+                    <tr>
+                        <th style="text-align: center !important;">เลขที่สัญญา</th>
+                        <th style="text-align: center !important;">สินค้า</th>
+                        <th style="text-align: center !important;">ยี่ห้อ</th>
+                        <th style="text-align: center !important;">รายละเอียด</th>
+                        <th style="text-align: center !important;">ราคาขาย</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <?php 
+                                $sum = 0;
+                                $products = json_decode($product_json);
+                                foreach($products as $product) {
+                                $sum = $sum + $product->product_value; 
+                    ?>
+                    <tr>
+                        <td>
+                            <?php echo $product->agreement_number; ?>
+                        </td>
+                        <td>
+                            <?php echo $product->product_name; ?>
+                        </td>
+                        <td>
+                            <?php echo $product->product_brand; ?>
+                        </td>
+                        <td>
+                            <?php echo $product->product_detail; ?>
+                        </td>
+                        <td>
+                            <?php echo number_format($product->sale_value); ?>
+                        </td>
+                    </tr>
+                        <?php } ?>
+                        <?php 
+                            // จำกัดแค่รายการละ 5 ชิ้น 
+                            $count = count($products);
+                            if($count != 5){
+                            for($count ; $count < 5 ; $count++){ 
+                            echo '<tr>';
+                                echo '<td></td>';       
+                                echo '<td></td>';
+                                echo '<td></td>';      
+                                echo '<td></td>';       
+                                echo '<td><input type="text" disabled></td>';
+                            echo '</tr>'; 
+                            }
+                        }
+                        ?>
+                        <tr>
+                            <td colspan="4">รวมเงิน</td>
+                            <td>
+                                <?php echo $sum_sale_value; ?>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="float:left;">
+            หมายเหตุ
+            <span><?php echo $note; ?></span>
+        </p>
+        <p style="float: right;">
+            ผู้รับเงิน
+            <?php echo $this->session->get("user"); ?>
+        </p>
+        <br>
+
+        <br>
+        <hr>
+        <br>
+
+        <p style="text-align: center; font-size:20px;">บิลเงินสด สำหรับร้านค้า
+        </p>
+        <p style="text-align: center;">
+            <span>วันที่ขาย</span>
+            <input type="text" name="transaction_date" class="transaction_date" value="<?php echo $transaction_date; ?>" disabled>
+        </p>
+        <!-- <p style="text-align: center;"></p> -->
+        <p style="text-align: center;">
+            โทรศัพท์ <?php echo $tel; ?> , <?php echo $m_tel; ?> , ไลน์ : <?php echo $line; ?>
+        </p>
+        <div class="table">
+            <table id="list_of_sales" class="table table-bordered" style="font-size:10.95px !important;">
+                <thead>
+                    <tr>
+                        <th style="text-align: center !important;">เลขที่สัญญา</th>
+                        <th style="text-align: center !important;">สินค้า</th>
+                        <th style="text-align: center !important;">ยี่ห้อ</th>
+                        <th style="text-align: center !important;">รายละเอียด</th>
+                        <th style="text-align: center !important;">ราคาขาย</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <?php 
+                                $sum = 0;
+                                $products = json_decode($product_json);
+                                foreach($products as $product) {
+                                $sum = $sum + $product->product_value; 
+                    ?>
+                    <tr>
+                        <td>
+                            <?php echo $product->agreement_number; ?>
+                        </td>
+                        <td>
+                            <?php echo $product->product_name; ?>
+                        </td>
+                        <td>
+                            <?php echo $product->product_brand; ?>
+                        </td>
+                        <td>
+                            <?php echo $product->product_detail; ?>
+                        </td>
+                        <td>
+                            <?php echo number_format($product->sale_value); ?>
+                        </td>
+                    </tr>
+                        <?php } ?>
+                        <?php 
+                            // จำกัดแค่รายการละ 5 ชิ้น 
+                            $count = count($products);
+                            if($count != 5){
+                            for($count ; $count < 5 ; $count++){ 
+                            echo '<tr>';
+                                echo '<td></td>';       
+                                echo '<td></td>';
+                                echo '<td></td>';      
+                                echo '<td></td>';       
+                                echo '<td><input type="text" disabled></td>';
+                            echo '</tr>'; 
+                            }
+                        }
+                        ?>
+                        <tr>
+                            <td colspan="4">รวมเงิน</td>
+                            <td>
+                                <?php echo $sum_sale_value; ?>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+        <p style="float:left;">
+            หมายเหตุ
+            <span><?php echo $note; ?></span>
+        </p>
+        <p style="text-align: right;">
+            ผู้รับเงิน
+            <?php echo $this->session->get("user"); ?>
+        </p>
+    </section>
+</body>
+<html>
+<script type="text/javascript">
+     window.onload = function() {
+       window.print();
+       window.location='<?php echo $this->url->get('sale/')?>';
+     }
+</script>

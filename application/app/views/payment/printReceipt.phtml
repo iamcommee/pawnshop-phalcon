@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+    <?php echo 'สลิปต่อดอก '.$agreement_number; ?>
+    </title>
+    <link rel="shortcut icon" href="<?php echo $this->url->get('public/img/favicon.ico')?>" type='image/x-icon' />
+    <?php $this->assets->outputCss(); ?>
+</head>
+<body>
+    <page size="80mm">
+        <p style="font-size:32px;">
+            <?php echo '*เลขที่สัญญา '.$agreement_number.'*'?>
+        </p>
+        <p class="content"> เวลาที่ทำรายการ : <?php echo $transaction_date;?> </p>
+        <p class="content"><i class="fas fa-phone-square"></i> โทรศัพท์ <?php echo $tel; ?> , <?php echo $m_tel; ?></p>
+        <p class="content"><i class="fab fa-line"></i> ไลน์ไอดี : <?php echo $line; ?></p>
+        <p class="content"> รายการที่ทำ : <?php echo $status; ?></p>
+        <p class="content">
+            ------ รายการสินค้า ------
+        </p> 
+        <?php
+                $product_info = json_decode($product_json);
+                foreach($product_info as $product):
+                    echo '<p class="content">';
+                    echo $product->product_name.' '.$product->product_brand.' '.$product->product_detail.' '.number_format($product->product_value).'<br>';
+                    echo '</p>';
+                endforeach;
+        ?>
+        <p class="content">
+            หมายเหตุ <?php if ($note) { echo $note; } else { echo '-'; } ?>
+        </p>
+        <p class="content">
+            ต้องนำใบนี้มาติดต่อภายในวันที่ <u><?php echo $end_date; ?></u>
+        </p>
+    </page>
+</body>
+</html>
+<script type="text/javascript">
+    
+    window.onload = function(){ 
+        window.print();
+        window.close();
+    };
+
+</script>

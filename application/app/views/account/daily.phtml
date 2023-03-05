@@ -1,0 +1,88 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="account_table_wrap col-md-12 d-none">
+            <form class="d-flex justify-content-center" action="" method="GET">
+                <span class="col-1 w-100 text-center" style="top:10px;"> </span>
+                <div class="col-2 w-100">
+                    <select class="custom-select-input text-center month" name="month">
+                        <option selected="selected" value="<?php echo $value_start_month; ?>">
+                            <?php echo $start_month.' - ปัจจุบัน'; ?></option>
+                        <option value="1">มกราคม</option>
+                        <option value="2">กุมภาพันธ์</option>
+                        <option value="3">มีนาคม</option>
+                        <option value="4">เมษายน</option>
+                        <option value="5">พกฤษภาคม</option>
+                        <option value="6">มิถุนายน</option>
+                        <option value="7">กรกฏาคม</option>
+                        <option value="8">สิงหาคม</option>
+                        <option value="9">กันยายน</option>
+                        <option value="10">ตุลาคม</option>
+                        <option value="1">พฤษจิกายน</option>
+                        <option value="12">ธันวาคม</option>
+                    </select>
+                </div>
+                <span class="col-1 w-100 text-center" style="top:10px;"> ปี </span>
+                <div class="col-2 w-100">
+                    <select class="custom-select-input text-center year" name="year"">
+                        <option selected=" selected" value="<?php echo $last_year; ?>"><?php echo $last_year; ?>
+                        </option>
+                        <?php $years = json_decode($year_json);
+                                foreach ($years as $year) { 
+                        ?>
+                        <option value="<?php echo $year->year; ?>"><?php echo $year->year; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <span class="col-1 w-100 text-center"> <button
+                        class="confirm-search btn btn-circle btn-outline-primary x-rounded">&nbsp;&nbsp;&nbsp;<i
+                            class="fas fa-search"></i>&nbsp;&nbsp;&nbsp;</button> </span>
+            </form>
+            <br>
+            <table id="account_table" class="table table-bordered table-hover" cellspacing="0" width="100%">
+                <thead class="text-center">
+                    <tr>
+                        <th>วันที่</th>
+                        <th class="sum">รายการเข้า</th>
+                        <th class="sum">รายการออก</th>
+                        <th class="sum">รายการขาย</th>
+                        <th class="sum">ดอกจากการต่อ</th>
+                        <th class="sum">ดอกจากการไถ่</th>
+                        <th class="sum">กำไรจากการขาย</th>
+                        <th class="sum">รายการตั้งขาย</th>
+                    </tr>
+                </thead>
+                <tfoot class="text-center">
+                    <tr>
+                        <th>รวมทั้งเดือน</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th>ค่าเฉลี่ย</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+                <tbody class="text-center"></tbody>
+            </table>
+        </div>
+        <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+        </div>
+    </div>
+</div>
+<?php $this->assets->outputJs();?>

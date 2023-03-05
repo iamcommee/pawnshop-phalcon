@@ -1,0 +1,40 @@
+<html>
+
+<head>
+    <?php echo $this->tag->getTitle(); ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='shortcut icon' href="<?php echo $this->url->get('public/img/favicon.ico')?>" type='image/x-icon' />
+    <?php $this->assets->outputCss(); ?>
+</head>
+
+<body class="bg">
+
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center text-center">
+        <form class="col-11 col-sm-5" action="process" method="post">
+            <div class="text-center">
+                <h1 class="color-black">รายละเอียดสัญญา</h1>
+                <br>
+                <?php $this->flashSession->output() ?>
+            </div>
+            <br>
+            <input id="search_agreement" class="custom-input w-75" style="text-align:center;" type="text" name="number" id="number" placeholder="ค้นหาด้วยเลขที่สัญญา"
+                autofocus />
+            <br>
+            <br>
+            <button class="btn btn-custom btn-outline-primary x-rounded w-75">
+                <b>ค้นหา</b>
+            </button>
+            <br>
+            <br>
+            <div class="coppyright text-center">
+                <p><i class="far fa-copyright"></i> commee. All rights reserved</p>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+
+<html>
+<?php $this->assets->outputJs(); ?>

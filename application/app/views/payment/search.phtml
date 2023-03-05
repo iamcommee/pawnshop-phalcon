@@ -1,0 +1,1740 @@
+<div class="wrap">
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-12 ">
+      <div class="d-flex justify-content-between">
+        <div>
+          <span class="color-black" style="font-size:22px;">รายละเอียดสัญญา <?php echo $agreement_number ?></span>
+        </div>
+        <div>
+          <button class="btn btn-custom btn-outline-primary x-rounded x-fixed-width" data-toggle="modal" data-target="#payInterestProductsModal">
+            ต่อดอกทั้งหมด 
+          </button>
+          <button class="btn btn-custom btn-outline-danger x-rounded x-fixed-width" data-toggle="modal" data-target="#withdrawProductsModal">
+            ไถ่คืนทั้งหมด 
+          </button>
+          <button type="button" class="btn btn-circle btn-outline-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+          <div class="dropdown-menu x-md-rounded">
+            <a class="dropdown-item" href="../print-agreement/<?php echo $agreement_number ?>" target="_blank">พิมพ์สัญญา</a>
+            <a class="dropdown-item" href="../print-last-receipt/<?php echo $agreement_number ?>" target="_blank">พิมพ์ใบต่อดอก</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#insertProductModal">เพิ่มสินค้า</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteAgreementModal">ลบสัญญา</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <hr>
+
+      <?php 
+          $customers = json_decode($customer_json); 
+          // start customer foreach
+          foreach($customers as $customer):
+      ?>  
+  <div class="row justify-content-center align-items-center">
+    <div class="col-12 col-sm-6">
+      <div class="text-center">
+        <img id="idcard_iamge" class="x-sm-rounded" style="width:80%;" src="../../public/customerimg/<?php echo $customer->image; ?>">
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6">
+      <br>
+      <br>
+      <br>
+        <input type="text" class="custom-input search-customer" name="idcard" id="idcard" value="<?php echo $customer->idcard; ?>" readonly>
+        <input type="text" class="custom-input" name="firstname" id="firstname" value="<?php echo $customer->firstname; ?>" disabled>
+        <input type="text" class="custom-input" name="lastname" id="lastname" value="<?php echo $customer->lastname; ?>" disabled>
+      <br>
+      <br>
+    </div>
+  </div>
+      <?php
+          // end customer foreach
+          endforeach;
+      ?>
+
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <div class="row">
+    <div class="col-12 col-sm-12">
+      <!-- start nav tab -->
+      <ul class="nav nav-tabs nav-justified">
+          <?php 
+            $products = json_decode($product_json); 
+            $i = 1;
+            // start product foreach
+            foreach($products as $product){
+          ?>
+          <li class="nav-item">
+            <a class="nav-link <?php if($i == 1){ echo 'active'; }; ?>" data-toggle="tab" href="#<?php echo 'product-'.$product->product_number; ?>">
+              <?php echo $product->name.' '.$product->brand.' '.$product->detail.' ราคา '.$product->value; ?>
+            </a>
+          </li>
+          <?php 
+            // end product foreach
+            $i++; }; 
+          ?>
+      <!-- end nav tab -->
+      </ul>
+      <br>
+      <!-- start tab content -->
+      <div class="tab-content">
+        <?php 
+        $i = 1; 
+        // start product foreach
+        foreach($products as $product){
+        ?>
+        <div class="tab-pane fade <?php if ($i == 1) {echo "show active";} ?>" id="<?php echo 'product-'.$product->product_number; ?>">
+            <div class="d-flex justify-content-between">
+            <div>
+              <!-- text here -->
+            </div>
+            <div>
+              <button class="btn btn-custom btn-sm btn-outline-primary x-rounded x-fixed-width" data-toggle="modal" data-target="<?php echo '#interest-'.$product->product_number; ?>">
+                ต่อดอกชิ้นเดียว
+              </button>
+              <button class="btn btn-custom btn-sm btn-outline-danger x-rounded x-fixed-width" data-toggle="modal" data-target="<?php echo '#withdraw-'.$product->product_number; ?>">
+                ไถ่คืนชิ้นเดียว
+              </button>
+              <button type="button" class="btn btn-circle btn-outline-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-h"></i>
+              </button>
+              <div class="dropdown-menu x-md-rounded">
+                <a class="dropdown-item" data-toggle="modal" data-target="<?php echo '#increase-'.$product->product_number; ?>">เพิ่มเงิน</a>
+                <a class="dropdown-item" data-toggle="modal" data-target="<?php echo '#decrease-'.$product->product_number; ?>">ลดต้น</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" data-toggle="modal" data-target="<?php echo '#separate-product-'.$product->product_number; ?>">แยกสินค้า</a>
+                <a class="dropdown-item" data-toggle="modal" data-target="<?php echo '#separate-sale-'.$product->product_number; ?>">แยกขาย</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" data-toggle="modal" data-target="<?php echo '#edit-product-'.$product->product_number; ?>">แก้ไขสินค้า</a>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="table-responsive-xl dddd">
+            <table class="table table-bordered">
+              <thead class="text-center">
+                <tr>
+                  <th>วันคิดดอก</th>
+                  <th>วันส่งดอก</th>
+                  <th>สถานะ</th>
+                  <th>วันที่ทำรายการ</th>
+                  <th>หมายเหตุ</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody class="text-center">
+                <?php 
+                  // start transaction foreach
+                  $counter = 1;
+                  foreach($product->transactions as $transaction){
+                ?>
+                <tr>
+                  <td>
+                    <?php echo $transaction->start_date; ?>
+                  </td>
+                  <td>
+                    <?php echo $transaction->end_date; ?>
+                  <td class="status">
+                    <?php echo $transaction->status; ?>
+                  </td>
+                  <td>
+                    <?php echo $transaction->transaction_date.' '.$transaction->transaction_time; ?>
+                  </td>
+                  <td>
+                    <?php echo $transaction->note; ?>
+                  </td>
+                  <td>
+                  <?php if($transaction->status != "แยกสินค้า" && $transaction->status != "แยกขาย" ) { ?>
+                      <span><i class="fas fa-ellipsis-h" data-toggle="modal" data-target="<?php echo '#transaction-'.$transaction->transaction_number; ?>"></i></span> 
+                  <?php } ?>
+                  </td>
+                </tr>
+
+                <!-- Start Edit section -->
+                <?php if ($transaction->status == "ฝาก" || $transaction->status == "ซื้อเข้า") { ?>
+                <!-- Start PawnModal -->
+                <div class="modal fade" id="<?php echo 'transaction-'.$transaction->transaction_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไข <?php echo $transaction->account_id; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="<?php echo $this->url->get('payment/edit-pawn-transaction')?>" method="POST">
+                              <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                              <input type="hidden" name="account_id" value="<?php echo $transaction->account_id ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สถานะ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="status" class="custom-input status" value="<?php echo $transaction->status; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ยอดเงิน</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="value" class="custom-input" value="<?php echo $transaction->value; ?>" required>
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group row">
+                            <div class="col-sm-12">
+                              <button type="submit" class="confirm-edit-pawn btn btn-custom btn-outline-primary x-rounded w-100">
+                                ยืนยันการแก้ไข
+                              </button>
+                            </div>
+                            </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End PawnModal -->
+                <?php } else if ($transaction->status == 'ว่าง' || $transaction->status == 'หลุด') { ?>
+                <!-- Start CommonModal -->
+                <div class="modal fade" id="<?php echo 'transaction-'.$transaction->transaction_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไข <?php echo $transaction->account_id; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="transaction-form">
+                          <form action="<?php echo $this->url->get('payment/edit-transaction')?>" method="POST">
+                              <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                              <input type="hidden" name="transaction_id" value="<?php echo $transaction->transaction_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สถานะ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="status" class="custom-input status" value="<?php echo $transaction->status; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันคิดดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="start_date" class="custom-input start_date" value="<?php echo $transaction->common_start_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันส่งดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="end_date" class="custom-input end_date" value="<?php echo $transaction->common_end_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input" value="<?php echo $transaction->note; ?>">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group row">
+                              <?php
+                                if($transaction->related_uuid){
+                              ?>
+                                <div class="col-sm-6">
+                                  <button type="submit" class="confirm-edit-interest btn btn-custom btn-outline-primary x-rounded  w-100">
+                                    ยืนยันการแก้ไข
+                                  </button>
+                                </div>
+                                <div class="col-sm-6">
+                                  <button type="button" class="confirm-delete-separate-product-transaction btn btn-custom btn-outline-primary x-rounded w-100" data-transaction_id="<?php echo $transaction->transaction_id ?>">
+                                    ลบรายการแยกสินค้า
+                                </button>
+                                </div>
+                              <?
+                                } else { 
+                              ?>
+                                <div class="col-sm-12">
+                                  <button type="submit" class="confirm-edit-interest btn btn-custom btn-outline-primary x-rounded  w-100">
+                                    ยืนยันการแก้ไข
+                                  </button>
+                                </div>
+                              <?php
+                                }
+                              ?>
+                            </div>
+                        </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <?php } else if ($transaction->status == 'ต่อดอกทั้งหมด') { ?>
+                <!-- Start PayInterestsModal -->
+                <div class="modal fade" id="<?php echo 'transaction-'.$transaction->transaction_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไข <?php echo $transaction->account_id; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="transaction-form">
+                          <form action="<?php echo $this->url->get('payment/edit-interest-transaction')?>" method="POST">
+                              <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                              <input type="hidden" name="account_id" value="<?php echo $transaction->account_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date" value="<?php echo $transaction->common_transaction_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_time" class="custom-input" value="<?php echo $transaction->transaction_time; ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันคิดดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="start_date" class="custom-input start_date" value="<?php echo $transaction->common_start_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันส่งดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="end_date" class="custom-input end_date" value="<?php echo $transaction->common_end_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สถานะ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="status" class="custom-input" value="<?php echo $transaction->status; ?>" disabled>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ดอกเบี้ย</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="interest" class="custom-input" value="<?php echo $transaction->value; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input" value="<?php echo $transaction->note; ?>">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group row" data-account_id="<?php echo $transaction->account_id ?>">
+                            <div class="col-sm-6">
+                              <button type="submit" class="confirm-edit-interest btn btn-custom btn-outline-primary x-rounded  w-100">
+                                ยืนยันการแก้ไข
+                            </button>
+                            </div>
+                            <div class="col-sm-6">
+                              <button type="button" class="confirm-delete-interests-transaction btn x-rounded btn-custom btn-outline-primary w-100">
+                                ลบรายการต่อดอกทั้งหมด
+                              </button>
+                            </div>
+                            </div>
+                        </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End PayInterestsModal -->
+                <?php } else if ($transaction->status == "ต่อดอกชิ้นเดียว") { ?>
+                <!-- Start PayInterestsModal -->
+                <div class="modal fade" id="<?php echo 'transaction-'.$transaction->transaction_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไข <?php echo $transaction->account_id; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="transaction-form">
+                          <form action="<?php echo $this->url->get('payment/edit-interest-transaction')?>" method="POST">
+                              <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                              <input type="hidden" name="account_id" value="<?php echo $transaction->account_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date" value="<?php echo $transaction->common_transaction_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_time" class="custom-input" value="<?php echo $transaction->transaction_time; ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันคิดดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="start_date" class="custom-input start_date" value="<?php echo $transaction->common_start_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันส่งดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="end_date" class="custom-input end_date" value="<?php echo $transaction->common_end_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สถานะ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="status" class="custom-input" value="<?php echo $transaction->status; ?>" disabled>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ดอกเบี้ย</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="interest" class="custom-input" value="<?php echo $transaction->value; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input" value="<?php echo $transaction->note; ?>">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group row" data-account_id="<?php echo $transaction->account_id ?>">
+                            <div class="col-sm-6">
+                              <button type="submit" class="confirm-edit-interest btn btn-custom btn-outline-primary x-rounded  w-100">
+                                <b>ยืนยันการแก้ไข</b>
+                            </button>
+                            </div>
+                            <div class="col-sm-6">
+                              <button type="button" class="confirm-delete-interest-transaction btn x-rounded btn-custom btn-outline-primary w-100">
+                                <b>ลบรายการต่อดอก</b>
+                              </button>
+                            </div>
+                            </div>
+                        </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End PayInterestsModal -->
+                <?php } else if ($transaction->status == 'ไถ่คืนทั้งหมด') { ?>
+                <!-- Start WithdrawModal -->
+                <div class="modal fade" id="<?php echo 'transaction-'.$transaction->transaction_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไข <?php echo $transaction->account_id; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                      <div class="transaction-form">
+                          <form action="<?php echo $this->url->get('payment/edit-withdraw-transaction')?>" method="POST">
+                              <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                              <input type="hidden" name="account_id" value="<?php echo $transaction->account_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date" value="<?php echo $transaction->common_transaction_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_time" class="custom-input" value="<?php echo $transaction->transaction_time; ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สถานะ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="status" class="custom-input" value="<?php echo $transaction->status; ?>" disabled>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เงินต้น</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="principal" class="custom-input" value="<?php echo $transaction->principal; ?>" disabled>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ดอกเบี้ย</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="interest" class="custom-input" value="<?php echo $transaction->value; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input" value="<?php echo $transaction->note; ?>">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group row" data-account_id="<?php echo $transaction->account_id ?>">
+                            <div class="col-sm-6">
+                              <button type="submit" class="confirm-edit-withdraw btn btn x-rounded btn-custom btn-outline-primary w-100">
+                                ยืนยันการแก้ไข
+                            </button>
+                            </div>
+                            <div class="col-sm-6">
+                              <button type="button" class="confirm-delete-withdraws-transaction btn x-rounded btn-custom btn-outline-primary w-100">
+                                ลบรายการไถ่คืนทั้งหมด
+                              </button>
+                            </div>
+                            </div>
+                        </form>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End WithDrawModel -->
+                <?php } else if ($transaction->status == "ไถ่คืนชิ้นเดียว") { ?>
+                <!-- Start WithdrawModal -->
+                <div class="modal fade" id="<?php echo 'transaction-'.$transaction->transaction_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไข <?php echo $transaction->account_id; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                      <div class="transaction-form">
+                          <form action="<?php echo $this->url->get('payment/edit-withdraw-transaction')?>" method="POST">
+                              <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                              <input type="hidden" name="account_id" value="<?php echo $transaction->account_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date" value="<?php echo $transaction->common_transaction_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_time" class="custom-input" value="<?php echo $transaction->transaction_time; ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สถานะ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="status" class="custom-input" value="<?php echo $transaction->status; ?>" disabled>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เงินต้น</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="principal" class="custom-input" value="<?php echo $transaction->principal; ?>" disabled>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ดอกเบี้ย</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="interest" class="custom-input" value="<?php echo $transaction->value; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input" value="<?php echo $transaction->note; ?>">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group row" data-account_id="<?php echo $transaction->account_id ?>">
+                            <div class="col-sm-6">
+                              <button type="submit" class="confirm-edit-withdraw btn btn x-rounded btn-custom btn-outline-primary w-100">
+                                ยืนยันการแก้ไข
+                            </button>
+                            </div>
+                            <div class="col-sm-6">
+                              <button type="button" class="confirm-delete-withdraw-transaction btn x-rounded btn-custom btn-outline-primary w-100">
+                                ลบรายการไถ่คืน
+                              </button>
+                            </div>
+                            </div>
+                        </form>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End WithDrawModel -->
+                <?php } else if ($transaction->status == "เพิ่มเงิน") {  ?>
+                <!-- Start IncreaseModal -->
+                <div class="modal fade" id="<?php echo 'transaction-'.$transaction->transaction_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไข <?php echo $transaction->account_id; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="transaction-form">
+                          <form action="<?php echo $this->url->get('payment/editIncreaseTransaction')?>" method="POST">
+                              <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                              <input type="hidden" name="account_id" value="<?php echo $transaction->account_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date" value="<?php echo $transaction->common_transaction_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_time" class="custom-input" value="<?php echo $transaction->transaction_time; ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สถานะ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="status" class="custom-input" value="<?php echo $transaction->status; ?>" disabled>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ยอดเงิน</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="increase_value" class="custom-input" value="<?php echo $transaction->value; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input" value="<?php echo $transaction->note; ?>">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group row">
+                            <div class="col-sm-6">
+                              <button type="submit" class="confirm-edit-increase-transaction btn btn-custom btn-outline-primary x-rounded w-100">
+                                ยืนยันการแก้ไข
+                            </button>
+                            </div>
+                            <div class="col-sm-6">
+                              <button type="button" class="confirm-delete-increase-transaction btn btn-custom btn-outline-primary x-rounded w-100" data-account_id="<?php echo $transaction->account_id ?>">
+                                ลบรายการนี้
+                              </button>
+                            </div>
+                            </div>
+                          </form>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End IncreaseModal-->
+                <?php } else if ($transaction->status == "ลดต้น") {  ?>
+                <!-- Start DecreaseModal -->
+                <div class="modal fade" id="<?php echo 'transaction-'.$transaction->transaction_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไข <?php echo $transaction->account_id; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="transaction-form">
+                            <form action="<?php echo $this->url->get('payment/editDecreaseTransaction')?>" method="POST">
+                                <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                                <input type="hidden" name="account_id" value="<?php echo $transaction->account_id; ?>">
+                              <div class="form-group row">
+                                <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                                <div class="col-sm-6">
+                                  <input type="text" name="transaction_date" class="custom-input transaction_date" value="<?php echo $transaction->common_transaction_date; ?>" required>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+                                <div class="col-sm-6">
+                                  <input type="text" name="transaction_time" class="custom-input" value="<?php echo $transaction->transaction_time; ?>">
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label class="col-sm-6 col-form-label custom-label">สถานะ</label>
+                                <div class="col-sm-6">
+                                  <input type="text" name="status" class="custom-input" value="<?php echo $transaction->status; ?>" disabled>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label class="col-sm-6 col-form-label custom-label">ยอดเงิน</label>
+                                <div class="col-sm-6">
+                                  <input type="number" name="principle_value" class="custom-input" value="<?php echo $transaction->principal; ?>" required>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label class="col-sm-6 col-form-label custom-label">ดอกเบี้ย</label>
+                                <div class="col-sm-6">
+                                  <input type="number" name="interest_value" class="custom-input" value="<?php echo $transaction->value; ?>" required>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input" value="<?php echo $transaction->note; ?>">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                              <div class="form-group row">
+                              <div class="col-sm-6">
+                                <button type="submit" class="confirm-edit-decrease-transaction btn btn-custom btn-outline-primary x-rounded w-100">
+                                  ยืนยันการแก้ไข
+                              </button>
+                              </div>
+                              <div class="col-sm-6">
+                                <button type="button" class="confirm-delete-decrease-transaction btn btn-custom btn-outline-primary x-rounded w-100" data-account_id="<?php echo $transaction->account_id ?>">
+                                  ลบรายการนี้
+                                </button>
+                              </div>
+                              </div>
+                            </form>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End DecreaseModal -->
+                <?php } else if ($transaction->status == "ตั้งขาย") { ?>
+                <!-- Start SaleModal -->
+                <div class="modal fade" id="<?php echo 'transaction-'.$transaction->transaction_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไข <?php echo $transaction->account_id; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="transaction-form">
+                          <form action="<?php echo $this->url->get('payment/edit-sale-transaction')?>" method="POST">
+                          <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                          <input type="hidden" name="account_id" value="<?php echo $transaction->account_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date" value="<?php echo $transaction->common_transaction_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_time" class="custom-input" value="<?php echo $transaction->transaction_time; ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สถานะ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="status" class="custom-input" value="<?php echo $transaction->status; ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ราคาตั้งขาย</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="sale_value" class="custom-input" value="<?php echo $transaction->value; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input" value="<?php echo $transaction->note; ?>">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group row">
+                            <div class="col-sm-6">
+                              <button type="submit" class="confirm-edit-sale-transaction btn btn x-rounded btn-custom btn-outline-primary w-100">
+                                ยืนยันการแก้ไข
+                            </button>
+                            </div>
+                            <div class="col-sm-6">
+                              <button type="button" class="confirm-delete-sale-transaction btn x-rounded btn-custom btn-outline-primary w-100" data-account_id="<?php echo $transaction->account_id ?>">
+                                ยกเลิกตั้งขาย
+                              </button>
+                            </div>
+                            </div>
+                        </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End SaleModal -->
+                <?php } else if ($transaction->status == "ตั้งขายกรณีพิเศษ") { ?>
+                <!-- Start SaleModal -->
+                <div class="modal fade" id="<?php echo 'transaction-'.$transaction->transaction_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไข <?php echo $transaction->account_id; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="transaction-form">
+                          <form action="<?php echo $this->url->get('payment/edit-sale-transaction')?>" method="POST">
+                          <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                          <input type="hidden" name="account_id" value="<?php echo $transaction->account_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สถานะ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="status" class="custom-input" value="<?php echo $transaction->status; ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ราคาตั้งขาย</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="sale_value" class="custom-input" value="<?php echo $transaction->value; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input" value="<?php echo $transaction->note; ?>">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group row">
+                            <div class="col-sm-6">
+                              <button type="submit" class="confirm-edit-sale-transaction btn btn x-rounded btn-custom btn-outline-primary w-100">
+                                ยืนยันการแก้ไข
+                            </button>
+                            </div>
+                            <div class="col-sm-6">
+                              <button type="button" class="confirm-delete-separate-sale-transaction btn x-rounded btn-custom btn-outline-primary w-100" data-account_id="<?php echo $transaction->account_id ?>">
+                                ยกเลิกแยกขาย
+                              </button>
+                            </div>
+                            </div>
+                        </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <?php } else if ($transaction->status == "ขายแล้ว") { ?>
+                <!-- Start SoldOutModal -->
+                <div class="modal fade" id="<?php echo 'transaction-'.$transaction->transaction_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไข <?php echo $transaction->account_id; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="transaction-form">
+                          <form action="<?php echo $this->url->get('payment/edit-sold-out-transaction')?>" method="POST">
+                          <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                          <input type="hidden" name="account_id" value="<?php echo $transaction->account_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date" value="<?php echo $transaction->common_transaction_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สถานะ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="status" class="custom-input" value="<?php echo $transaction->status; ?>" disabled>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ราคาขาย</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="sold_value" class="custom-input" value="<?php echo $transaction->value; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input" value="<?php echo $transaction->note; ?>">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group row">
+                            <div class="col-sm-6">
+                              <button type="submit" class="confirm-edit-sold-out-transaction btn btn x-rounded btn-custom btn-outline-primary w-100">
+                                ยืนยันการแก้ไข
+                            </button>
+                            </div>
+                            <div class="col-sm-6">
+                              <button type="button" class="confirm-delete-sold-out-transaction btn x-rounded btn-custom btn-outline-primary w-100" data-account_id="<?php echo $transaction->account_id ?>">
+                                ยกเลิกการขาย
+                              </button>
+                            </div>
+                            </div>
+                        </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+                <!-- End SoldOutModal -->
+                <?php } else if($transaction->status == "มัดจำ") { ?>
+                <!-- Start DepositModal -->
+                <div class="modal fade" id="<?php echo 'transaction-'.$transaction->transaction_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไข <?php echo $transaction->account_id; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="transaction-form">
+                          <form action="<?php echo $this->url->get('payment/edit-deposit-transaction')?>" method="POST">
+                          <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                          <input type="hidden" name="account_id" value="<?php echo $transaction->account_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date" value="<?php echo $transaction->common_transaction_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สถานะ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="status" class="custom-input" value="<?php echo $transaction->status; ?>" disabled>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">มัดจำ</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="deposit_value" class="custom-input" value="<?php echo $transaction->value; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input" value="<?php echo $transaction->note; ?>">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group row">
+                            <div class="col-sm-6">
+                              <button type="submit" class="confirm-edit-deposit-transaction btn btn x-rounded btn-custom btn-outline-primary w-100">
+                                ยืนยันการแก้ไข
+                            </button>
+                            </div>
+                            <div class="col-sm-6">
+                              <button type="button" class="confirm-delete-deposit-transaction btn x-rounded btn-custom btn-outline-primary w-100" data-account_id="<?php echo $transaction->account_id ?>">
+                                ยกเลิกมัดจำ
+                              </button>
+                            </div>
+                            </div>
+                        </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End DepositModal -->
+                <?php } else { ?>
+                <!-- Start OtherModal -->
+                  <div class="modal fade" id="<?php echo 'transaction-'.$transaction->transaction_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไข <?php echo $transaction->account_id; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="transaction-form">
+                          <form action="<?php echo $this->url->get('payment/edit-transaction')?>" method="POST">
+                              <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                              <input type="hidden" name="transaction_id" value="<?php echo $transaction->transaction_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สถานะ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="status" class="custom-input status" value="<?php echo $transaction->status; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันคิดดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="start_date" class="custom-input start_date" value="<?php echo $transaction->common_start_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันส่งดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="end_date" class="custom-input end_date" value="<?php echo $transaction->common_end_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input" value="<?php echo $transaction->note; ?>">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group row">
+                              <?php
+                                if($transaction->related_uuid){
+                              ?>
+                                <div class="col-sm-6">
+                                  <button type="submit" class="confirm-edit-interest btn btn-custom btn-outline-primary x-rounded  w-100">
+                                    ยืนยันการแก้ไข
+                                  </button>
+                                </div>
+                                <div class="col-sm-6">
+                                  <button type="button" class="confirm-delete-separate-product-transaction btn btn-custom btn-outline-primary x-rounded w-100" data-transaction_id="<?php echo $transaction->transaction_id ?>">
+                                    ลบรายการแยกสินค้า
+                                </button>
+                                </div>
+                              <?
+                                } else { 
+                              ?>
+                                <div class="col-sm-12">
+                                  <button type="submit" class="confirm-edit-interest btn btn-custom btn-outline-primary x-rounded  w-100">
+                                    ยืนยันการแก้ไข
+                                  </button>
+                                </div>
+                              <?php
+                                }
+                              ?>
+                            </div>
+                        </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End OtherModal -->
+                <?php } ?>
+                <!-- End Edit section -->
+
+                <?php if($counter == 1) { ?>
+
+                <!-- Start editProductModal -->
+                <div class="modal fade" id="<?php echo 'edit-product-'.$product->product_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แก้ไขข้อมูลสินค้าเลขที่สัญญา <?php echo $agreement_number; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <form class="productForm" action="#">
+                              <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                              <input type="hidden" name="product_id" class="product_id" value="<?php echo $product->product_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สินค้า</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="product_name" class="product_name custom-input" value="<?php echo $product->name; ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ยี่ห้อ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="product_brand" class="product_brand custom-input" value="<?php echo $product->brand; ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">รายละเอียด</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="product_detail" class="product_detail custom-input" value="<?php echo $product->detail; ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ราคา</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="product_value" class="product_value custom-input" value="<?php echo $product->value; ?>">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group row">
+                            <div class="col-sm-6">
+                                <button type="submit" class="confirm-edit-product-information btn x-rounded btn-custom btn-outline-primary w-100">
+                                    ยืนยันการแก้ไข
+                                </button>
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="button" class="confirm-delete-product btn x-rounded btn-custom btn-outline-primary w-100" data-product_id="<?php echo $product->product_id; ?>">
+                                    ลบสินค้า
+                                </button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End editProductModal -->
+                <!-- Start payInterestProductModal -->
+                <div class="modal fade" id="<?php echo 'interest-'.$product->product_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">ต่อดอก <?php echo $product->name; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="<?php echo $this->url->get('payment/pay-interest-product')?>" method="POST" target="_blank">
+                              <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                              <input type="hidden" name="product_id" value="<?php echo $product->product_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_time" class="custom-input transaction_time" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่คิดดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="start_date" class="custom-input start_date " value="<?php echo $last_end_date; ?>"required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันส่งดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="end_date" class="custom-input end_date" value="<?php echo $next_end_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ดอกเบี้ย</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="agreement_interest" class="custom-input" value="<?php echo $product->interest; ?>" autofocus required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">จำนวนครั้งที่ต่อดอก</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="count_payment" class="custom-input" value="1" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <button class="btn btn-custom btn-outline-primary btn-submit x-rounded w-100">
+                                ยืนยันต่อดอก
+                            </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End payInterestProductModal -->
+                <!-- Start withdrawProductModal -->
+                <div class="modal fade" id="<?php echo 'withdraw-'.$product->product_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">ไถ่คืน <?php echo $product->name; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="<?php echo $this->url->get('payment/withdraw-product')?>" method="POST">
+                            <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>"> 
+                            <input type="hidden" name="product_id" value="<?php echo $product->product_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_time" class="custom-input transaction_time" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ยอดรวมทั้งหมด</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="agreement_withdraw" class="custom-input" value="<?php echo $product->value + $product->interest; ?>" autofocus required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <button class="btn btn-custom btn-outline-danger btn-submit x-rounded w-100">
+                                ยืนยันไถ่คืน
+                            </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End withdrawProductModal -->
+                <!-- Start increaseProductModal -->
+                <div class="modal fade" id="<?php echo 'increase-'.$product->product_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">เพิ่มเงิน <?php echo $product->name; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="<?php echo $this->url->get('payment/increase-value')?>" method="POST" target="_blank">
+                            <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                            <input type="hidden" name="product_id" value="<?php echo $product->product_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_time" class="custom-input transaction_time" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่คิดดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="start_date" class="custom-input start_date " value="<?php echo $last_start_date; ?>"required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันส่งดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="end_date" class="custom-input end_date" value="<?php echo $last_end_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ยอดเงิน</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="increase_value" class="custom-input" autofocus required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <button class="btn btn-custom btn-outline-primary btn-submit x-rounded w-100">
+                                ยืนยันเพิ่มเงิน
+                            </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End increaseProductModal -->
+                <!-- Start decreaseProductModal -->
+                <div class="modal fade" id="<?php echo 'decrease-'.$product->product_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">ลดต้น <?php echo $product->name; ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="<?php echo $this->url->get('payment/decrease-value')?>" method="POST" target="_blank">
+                            <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                            <input type="hidden" name="product_id" value="<?php echo $product->product_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_time" class="custom-input transaction_time" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่คิดดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="start_date" class="custom-input start_date " value="<?php echo $last_start_date; ?>"required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันส่งดอก</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="end_date" class="custom-input end_date" value="<?php echo $last_end_date; ?>" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เงินต้น</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="principal" class="custom-input" autofocus required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ดอกเบี้ย</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="decrease_value" class="custom-input" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <button class="btn btn-custom btn-outline-primary btn-submit x-rounded w-100">
+                                ยืนยันลดต้น
+                            </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End decreaseProductModal -->
+                <!-- Start separateProductModal -->
+                <div class="modal fade" id="<?php echo 'separate-product-'.$product->product_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แยกสินค้า</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <form class="separateProductForm" action="<?php echo $this->url->get('payment/separate-product')?>" method="POST">
+                            <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                            <input type="hidden" name="product_id" value="<?php echo $product->product_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_time" class="custom-input transaction_time">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สินค้า</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="product_name" class="custom-input product_name" required autofocus>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ยี่ห้อ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="product_brand" class="custom-input product_brand">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">รายละเอียด</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="product_detail" class="custom-input product_detail">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ราคา</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="product_value" class="custom-input product_value" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input note">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <button type="submit" class="confirm-separate-sale btn btn-custom btn-outline-primary x-rounded w-100">
+                                ยืนยันแยกขายสินค้า
+                            </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End separateSaleModal -->
+                <!-- Start separateSaleModal -->
+                <div class="modal fade" id="<?php echo 'separate-sale-'.$product->product_number; ?>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">แยกขาย</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <form class="separateSaleForm" action="<?php echo $this->url->get('payment/separate-sale')?>" method="POST">
+                            <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+                            <input type="hidden" name="product_id" value="<?php echo $product->product_id; ?>">
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_date" class="custom-input transaction_date">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="transaction_time" class="custom-input transaction_time">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">สินค้า</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="product_name" class="custom-input product_name" required autofocus>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ยี่ห้อ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="product_brand" class="custom-input product_brand">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">รายละเอียด</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="product_detail" class="custom-input product_detail">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ราคารับมา</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="product_value" class="custom-input product_value" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">ราคาตั้งขาย</label>
+                              <div class="col-sm-6">
+                                <input type="number" name="sale_value" class="custom-input sale_value" required>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                              <div class="col-sm-6">
+                                <input type="text" name="note" class="custom-input note">
+                              </div>
+                            </div>
+                            <br>
+                            <br>
+                            <button type="submit" class="confirm-separate-sale btn btn-custom btn-outline-primary x-rounded w-100">
+                                ยืนยันแยกขายสินค้า
+                            </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End separateSaleModal -->
+                <?php 
+                  // end if counter
+                  };
+                  $counter = 0;
+                  // end transaction foreach
+                  }; 
+                ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <?php 
+          // end product foreach
+          $i++; 
+          }
+        ?>
+        <!-- end tab content -->
+      </div>
+    </div>
+  </div>
+<!-- end container -->
+</div>
+</div>
+
+<!-- Start payInterestsProductsModal -->
+<div class="modal fade" id="payInterestProductsModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">ต่อดอกทั้งหมด</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form action="<?php echo $this->url->get('payment/pay-interest-products')?>" method="POST" target="_blank">
+            <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+              <div class="col-sm-6">
+                <input type="text" name="transaction_date" class="custom-input transaction_date" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+              <div class="col-sm-6">
+                <input type="text" name="transaction_time" class="custom-input transaction_time" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">วันที่คิดดอก</label>
+              <div class="col-sm-6">
+                <input type="text" name="start_date" class="custom-input start_date " value="<?php echo $last_end_date; ?>"required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">วันส่งดอก</label>
+              <div class="col-sm-6">
+                <input type="text" name="end_date" class="custom-input end_date" value="<?php echo $next_end_date; ?>" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">ดอกเบี้ย</label>
+              <div class="col-sm-6">
+                <input type="number" name="agreement_interests" class="custom-input" value="<?php echo $agreement_interests; ?>" autofocus required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">จำนวนครั้งที่ต่อดอก</label>
+              <div class="col-sm-6">
+                <input type="number" name="count_payment" class="custom-input" value="1" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+              <div class="col-sm-6">
+                <input type="text" name="note" class="custom-input">
+              </div>
+            </div>
+            <br>
+            <br>
+            <button class="btn btn-submit btn-custom btn-outline-primary x-rounded w-100">
+                ยืนยันต่อดอกทั้งหมด
+            </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End payInterestsProductsModal -->
+<!-- Start withdrawProductsModal -->
+<div class="modal fade" id="withdrawProductsModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">ไถ่คืนทั้งหมด</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form action="<?php echo $this->url->get('payment/withdraw-products')?>" method="POST">
+            <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+              <div class="col-sm-6">
+                <input type="text" name="transaction_date" class="custom-input transaction_date" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">เวลาที่ทำรายการ</label>
+              <div class="col-sm-6">
+                <input type="text" name="transaction_time" class="custom-input transaction_time" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">ยอดรวมทั้งหมด</label>
+              <div class="col-sm-6">
+                <input type="number" name="agreement_withdraws" class="custom-input" value="<?php echo $agreement_withdraws; ?>" autofocus required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+              <div class="col-sm-6">
+                <input type="text" name="note" class="custom-input">
+              </div>
+            </div>
+            <br>
+            <br>
+            <button class="btn btn-submit btn-custom btn-outline-danger btn-submit x-rounded w-100">
+                ยืนยันไถ่คืนทั้งหมด
+            </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End withdrawProductsModal -->
+<!-- Start insertProductModal -->
+<div class="modal fade" id="insertProductModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">เพิ่มสินค้า</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form action="<?php echo $this->url->get('payment/insert-product')?>" method="POST">
+            <input type="hidden" name="agreement_number" class="agreement_number" value="<?php echo $agreement_number ?>">
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">วันคิดดอก</label>
+              <div class="col-sm-6">
+                <input type="text" name="start_date" class="custom-input start_date" value="<?php echo $last_start_date; ?>">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">วันส่งดอก</label>
+              <div class="col-sm-6">
+                <input type="text" name="end_date" class="custom-input end_date" value="<?php echo $last_end_date; ?>">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">สินค้า</label>
+              <div class="col-sm-6">
+                <input type="text" name="product_name" class="custom-input product_name" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">ยี่ห้อ</label>
+              <div class="col-sm-6">
+                <input type="text" name="product_brand" class="custom-input product_brand">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">รายละเอียด</label>
+              <div class="col-sm-6">
+                <input type="text" name="product_detail" class="custom-input product_detail">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">ราคา</label>
+              <div class="col-sm-6">
+                <input type="number" name="product_value" class="custom-input product_value" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+              <div class="col-sm-6">
+                <input type="text" name="note" class="custom-input note">
+              </div>
+            </div>
+            <br>
+            <br>
+            <button type="submit" class="confirm-insert-product btn btn-custom btn-outline-primary x-rounded w-100">
+                ยืนยันเพิ่มสินค้า
+            </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End insertProductModal -->
+<!-- Start deleteAgreementModal -->
+<div class="modal fade" id="deleteAgreementModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header" style="border-bottom: 0px !important;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+          <img class="x-sm-rounded" style="width:20%;" src="../../public/img/delete-alert.svg">
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <span style="font-size:18px;">แน่ใจใช่ไหมว่าต้องการลบเลขที่สัญญา <?php echo $agreement_number; ?> ?</span>
+          <br>
+          <br>
+          <span style="font-size:12px;">เมื่อเสร็จสิ้นกระบวนการนี้ ระบบจะไม่สามารถกู้คืนข้อมูลกลับมาได้</span>
+          <br>
+          <br>
+          <br>
+          <br>
+          <form action="<?php echo $this->url->get('payment/delete-agreement')?>" method="POST">
+            <input type="hidden" name="agreement_number" value="<?php echo $agreement_number; ?>">
+            <div class="form-group row">
+            <div class="col-sm-6 text-right">
+              <button type="submit" class="confirm-delete-transaction btn btn-custom btn-danger x-rounded w-75">
+                ยืนยันลบรายการนี้
+              </button>
+            </div>
+            <div class="col-sm-6 text-left">
+              <button type="button" class="btn btn-custom btn-outline-danger x-rounded w-75" data-dismiss="modal" aria-label="Close">
+                ยกเลิก
+              </button>
+            </div>
+            </div>
+        </form>
+        <br>
+        <br>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End deleteAgreementModal -->
+<?php $this->assets->outputJs(); ?>

@@ -1,0 +1,353 @@
+<html>
+
+<head>
+    <title>
+        <?php echo "เลขที่สัญญา ".$agreement_number; ?>
+    </title>
+    <link rel="shortcut icon" href="<?php echo $this->url->get('public/img/favicon.ico')?>" type='image/x-icon' />
+    <?php $this->assets->outputCss(); ?>
+    <style>
+        @page {
+            size: A4
+        }
+        .underline {
+            border-bottom: 1px solid black;
+            display: inline;
+            padding: 0px 27.5px 0px 27.5px;
+        }
+        .underline-signature {
+            border-bottom: 1px solid black;
+            display: inline;
+            padding: 0px 128px 0px 128px;
+        }
+    </style>
+</head>
+
+<body class="A4">
+    <?php  
+    $agreements = json_decode($agreement_json);
+    foreach($agreements as $agreement): // Start Agreement foreach
+    ?>
+    <section class="sheet padding-5mm">
+        
+        <?php if ($agreement->status == 'ซื้อเข้า'){ echo ' <p id="bg-text">ซื้อเข้า</p>'; } elseif ($agreement->status == 'ซื้อเข้าของเก่า') { echo ' <p id="bg-text">ของเก่า</p>'; } ?>
+        <!-- Start title -->
+        <div class="title">
+            <p style="text-align: center; font-size:20px;">
+                <span>หนังสือสัญญาซื้อขาย-ฝาก</span>
+            </p>
+        </div>
+        <!-- End title -->
+
+        <!-- Start agreement number -->
+        <div class="agreement_number">
+            <p style="right:20; top:55; font-size:18px; position:absolute;">
+                <?php echo 'เลขที่สัญญา '.$agreement->agreement_number; ?>
+            </p>
+        </div>
+        <!-- End agreement number -->
+
+        <!-- Start storename -->
+        <div class="storename">
+            <p>
+                <span>เขียนที่ : </span><span><?php echo $storename; ?></span>
+            </p>
+        </div>
+        <!-- End storename -->
+
+        <!--  Start agreement date-->
+        <div class="agreement_date">
+            <p>
+                <span>วันที่ </span><?php echo $agreement->create_date; ?>
+            </p>
+        </div>
+        <!-- End agrement date -->
+
+        <!-- Start owner information -->
+        <div class="owner_information">
+            <p>
+                <span>สัญญานี้ทำขึ้นระหว่างข้าพเจ้า</span>
+                    <span class="underline">
+                        <?php echo $firstname.' '.$lastname; ?>
+                    </span>
+                <span>บ้านเลขที่</span>
+                    <span class="underline">
+                        <?php echo $house_no; ?>
+                    </span>
+                <span>หมู่ที่</span>
+                    <span class="underline">
+                        <?php echo $village_no; ?>
+                    </span>
+                <span>ถนน</span>
+                    <span class="underline">
+                        <?php echo $road; ?>
+                    </span>
+                <span>ซอย/ตรอก </span>
+                    <span class="underline">
+                        <?php echo $lane; ?>
+                    </span>
+            </p>
+            <p>
+                <span>ตำบล</span>
+                    <span class="underline">
+                        <?php echo $sub_district; ?>
+                    </span>
+                <span>อำเภอ</span>
+                    <span class="underline">
+                        <?php echo $district; ?>
+                    </span>
+                <span>จังหวัด</span>
+                    <span class="underline">
+                        <?php echo $province; ?>
+                    </span>
+                <span>รหัสไปรษณีย์</span>
+                    <span class="underline">
+                        <?php echo $zip_code; ?>
+                    </span>
+                <span>โทรศัพท์</span>
+                    <span class="underline">
+                        <?php echo $tel; ?>
+                    </span>
+            </p>
+        </div>
+        <!-- End owner information -->
+
+        <!-- Start agreement information -->
+        <div class="agreement information">
+            <p>ซึ่งในสัญญาเรียกว่า ผู้รับฝาก</p>
+                <?php foreach($agreement->customers as $customer ):?>
+                    <img style="float: right; witdh:25%; height:18%;" src="<?php echo $this->url->get('public/customerimg/'.$customer->image)?>" />
+                    <p>
+                        <span>กับ ข้าพเจ้า ชื่อ - สกุล : </span>
+                        <span><?php echo $customer->firstname.' '.$customer->lastname; ?></span>
+                    </p>
+                    <p>
+                        <span>เลขที่บัตรประชาชน : </span>
+                        <span><?php echo $customer->idcard; ?></span>
+                    </p>
+                <?php endforeach; ?>
+            <p>
+                <span>ซึ่งในสัญญาเรียกว่า ผู้ฝาก อีกฝ่ายหนึ่ง</span>
+            </p>
+            <div style="margin-top:80px">
+                <p>
+                    <span>ลายนื้วมือ</span>
+                    <img style="width:17.5%; height:8%; margin-top:-90px;" src="<?php echo $this->url->get('public/img/finger.png')?>" />
+                    <span>ผู้ไถ่ถอน กรณีหนังสือสัญญาสูญหาย</span>
+                </p>
+            </div>
+            <p>
+                <span>และทั้งสองฝ่ายตกลงทำสัญญากัน ดังมีข้อความดังต่อไปนี้</span>
+            </p>
+            <p>
+                <span> ข้อ 1 ผู้ฝากตกลงขายฝากและผู้รับฝากตกลงรับฝากของผู้ฝากในราคารวมเป็นเงินทั้งสิ้น </span>    
+                <span> <?php  echo number_format($agreement->total_value); ?> </span>
+                <span> บาท </span>
+            </p>
+            <p>
+                <span> กำหนดระยะเวลา 1 เดือนตั้งแต่วันที่ </span>    
+                <span class="underline"><?php echo $agreement->start_date; ?></span>
+                <span><?php echo 'ถึง'; ?></span>
+                <span class="underline"><?php echo $agreement->end_date; ?></span>
+                <span>และคิดอัตราดอกเบี้ยร้อยละ 1.25%</span>
+            </p>
+            <p>
+                <span>ข้อ 2 ผู้ฝากยอมส่งมอบทรัพย์สินให้ผู้รับฝากตั้งแต่วันที่</span>
+                <span class="underline"><?php echo $agreement->start_date; ?></span>
+                <span>และได้ตกลงกันว่าได้นำ</span>
+            </p>
+
+            <!-- Start Product left -->
+            <div style="float:left; width:9cm;">
+                <?php
+                 foreach($agreement->products as $product): 
+                    if($agreement->count_products > 1 && ($product->count%2) != 0){
+                        echo "<p style='text-align: right;'>";
+                        echo '<span>'.$product->name.' '.$product->brand.' '.$product->detail.' ราคา '.$product->value.'</span>';
+                        echo "</p>";
+                    }
+                 endforeach;
+                ?>
+            </div>
+            <!-- End Product left -->
+
+            <!-- Start Product right -->
+            <div style="float:right; width:9cm;">
+                <?php
+                 foreach($agreement->products as $product): 
+                    if($agreement->count_products > 1 && ($product->count%2) == 0){
+                        echo "<p style='text-align: left;'>";
+                        echo '<span>'.$product->name.' '.$product->brand.' '.$product->detail.' ราคา '.$product->value.'</span>';
+                        echo "</p>";
+                    }
+                 endforeach;
+                ?>
+            </div>
+            <!-- End Product right -->
+
+            <!-- Start Product Format -->
+            <?php 
+            if ($agreement->count_products == 1){
+                echo '<div style="margin-top:47px; margin-bottom:47px;">';
+                     foreach($agreement->products as $product): 
+                        if($agreement->count_products == 1 && ($product->count%2) != 0){
+                            echo "<p style='text-align: center;'>";
+                            echo '<span>'.$product->name.' '.$product->brand.' '.$product->detail.' ราคา '.$product->value.'</span>';
+                            echo "</p>";
+                        }
+                     endforeach;
+                echo '</div>';
+            } 
+            else 
+            {
+                    echo '<div style="margin-bottom:110px;"></div>';
+            } 
+            ?>
+            <!-- End Product Format -->
+            <p>
+                <span>ข้อ 3 ผู้ฝากสัญญาว่าทรัพย์สินที่ผู้ขายนำมาฝากให้แก่ผู้รับฝากนี้เป็นกรรมสิทธิ์ของผู้รับฝากแต่เพียงผู้เดียว ได้มาโดยชอบธรรม</span>              
+            </p>
+            <p>
+                <span>และ ผู้ฝากไม่เคยนำทรัพย์สินไปขาย,จำนอง,จำนำหรือทำนิติกรรมสัญญาผูกพันกับผู้อื่นมาก่อน</span>
+            </p>
+            <p>
+                <span>ข้อ 4 ถ้าผู้ฝากไม่สามารถนำเงินมาไถ่ถอนคืนได้ตามกำหนดระยะเวลา ทรัพย์สินที่นำมาขายฝากจะตกเป็นกรรมสิทธิ์ของผู้รับฝากทันที</span>
+            </p>
+            <p>
+                <span>และ สามารถนำทรัพย์สินดังกล่าวทอดขายตลาดได้</span>
+            </p>
+            <p>
+                <span>ข้อ 5 ทั้งสองฝ่ายได้อ่านและเข้าใจข้อความในสัญญานี้ดีแล้ว จึงได้ลงลายมือชื่อไว้เป็นหลักฐานต่อหน้าพยาน</span>
+            </p>
+            <div style="margin-top:-10px">
+                <p>
+                    <span>ลงชื่อ</span>
+                    <img style="width:15%; height:4%; margin: 0px 76px 0px 76px" src="<?php echo $this->url->get('public/img/sign.jpg')?>" />
+                    <span>ผู้รับโอนกรรมสิทธิ์</span>
+                </p>
+            </div>
+            <br>
+            <div>
+                <p>
+                    <div style="float:left; width:50%; margin-top:-10px;">
+                    <span>ลงชื่อ &#9747;</span>
+                    <span class="underline-signature"></span>
+                    <span>ผู้โอนกรรมสิทธิ์</span>
+                    </div>
+                    <div style="float:left; width:50%; text-align:right; margin-top:-10px;">
+                    <span>ลายนิ้วมือ</span>
+                    <span><img style="width:35%; height:8%; margin-top:-90px;" src="<?php echo $this->url->get('public/img/finger.png')?>" /></span>
+                    <span>ผู้โอนกรรมสิทธิ์</span>
+                    </div>
+                </p>
+            </div>
+            <br>
+            <hr style="border:0.5px solid black;">
+            <?php if ($agreement->status != 'ซื้อเข้า' && $agreement->status != 'ซื้อเข้าของเก่า'){ ?>
+        </div>
+        <!-- End agreement information -->
+
+        <!-- Start agreement for customer information -->
+            <div class="footer" style="font-size:12px;">
+                <p style="text-align: center; font-size:18px;">
+                    <span>เลขที่สัญญา</span>
+                    <span><?php echo $agreement->agreement_number;?></span>
+                </p>
+                <p style="text-align: center; margin-top:-10;">
+                    <span>ต้องนำเอกสารนี้มาติดต่อทุกครั้ง เปิดทุกวัน เว้น วันอาทิตย์ ที่ 2 และ 3 ของทุกเดือน วันธรรมดา เปิด 9.00 - 18.00 น. เสาร์,อาทิตย์ 9.00 - 17.30 น.</span>
+                </p>
+
+                <!-- Start Product left -->
+                <div style="float:left; width:9cm;">
+                    <?php
+                    foreach($agreement->products as $product): 
+                        if($agreement->count_products > 1 && ($product->count%2) != 0){
+                            echo "<p style='text-align: right;'>";
+                            echo '<span>'.$product->name.' '.$product->brand.' '.$product->detail.' ราคา '.$product->value.'</span>';
+                            echo "</p>";
+                        }
+                    endforeach;
+                    ?>
+                </div>
+                <!-- End Product left -->
+
+                <!-- Start Product right -->
+                <div style="float:right; width:9cm;">
+                    <?php
+                    foreach($agreement->products as $product): 
+                        if($agreement->count_products > 1 && ($product->count%2) == 0){
+                            echo "<p style='text-align: left;'>";
+                            echo '<span>'.$product->name.' '.$product->brand.' '.$product->detail.' ราคา '.$product->value.'</span>';
+                            echo "</p>";
+                        }
+                    endforeach;
+                    ?>
+                </div>
+                <!-- End Product right -->
+
+                <!-- Start Product Format -->
+                <?php 
+                if ($agreement->count_products == 1){
+                    echo '<div style="margin-top:47px; margin-bottom:47px;">';
+                        foreach($agreement->products as $product): 
+                            if($agreement->count_products == 1 && ($product->count%2) != 0){
+                                echo "<p style='text-align: center;'>";
+                                echo '<span>'.$product->name.' '.$product->brand.' '.$product->detail.' ราคา '.$product->value.'</span>';
+                                echo "</p>";
+                            }
+                        endforeach;
+                    echo '</div>';
+                } 
+                else 
+                {
+                        echo '<div style="margin-bottom:110px;"></div>';
+                } 
+                ?>
+                <!-- End Product Format -->
+
+                <!-- Start agreement for customer information left-->
+                <div>
+                    <p style="left:20px; bottom:-5px; position:absolute;">
+                        <span>  *** เอกสารนี้ผู้ที่ไม่ใช่เจ้าของที่นำมาฝาก สามารถนำมาไถ่ของออกได้</span>
+                        <br>
+                        <span>เบอร์โทรศัพท์ : <?php echo $tel; ?> , <?php echo $m_tel; ?> , ไลน์ไอดี : <?php echo $line; ?></span>
+                    </p>
+                </div>
+                <!-- End agreement for customer information left-->
+
+                <!-- Start agreement for customer information right-->
+                <div>
+                    <p style="right:-100px; bottom:-5px; position:absolute;">
+                        <span>ลงชื่อ</span>
+                        <img style="width:20%; height:4%; margin: 0px 83px 0px 83px" src="<?php echo $this->url->get('public/img/sign.jpg')?>" />
+                        <span>ผู้รับโอนกรรมสิทธิ์</span>
+                        <br>
+                        <br>
+                        <br>
+                        <span>ลงชื่อ &#9747;</span>
+                        <span class="underline-signature"></span>
+                        <span>ผู้โอนกรรมสิทธิ์</span>
+                        <br>
+                        <br>
+                        <span>ต้องนำใบฝากนี้มาติดต่อภายในวันที่</span>
+                        <span class="underline"><?php echo $agreement->end_date; ?>&nbsp;</span>
+                        <span>เท่านั้น</span>
+                    </p>
+                </div>
+                <!-- End agreement for customer information right-->
+            </div>
+            <!-- End agreement for customer information -->
+            <?php } ?>
+    </section>
+   
+    <?php endforeach; // End Agreement foreach ?>
+</body>
+<html>
+<script type="text/javascript">
+    
+    window.onload = function(){ 
+        window.print();
+        window.close();
+    };
+
+</script>

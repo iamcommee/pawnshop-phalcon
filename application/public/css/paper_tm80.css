@@ -1,0 +1,38 @@
+@font-face {
+    font-family: CSChatThaiUI;
+    src: url('../fonts/CSChatThaiUI.ttf');
+}
+
+  body {
+    font-family: 'CSChatThaiUI';
+    background: rgb(204,204,204); 
+    text-align: center;
+  }
+
+  .content{
+    font-size: 14px !important;
+  }
+  
+  page {
+    background: white;
+    display: block;
+    margin: 0 auto;
+    margin-top: 0.5cm;
+    margin-bottom: 0.5cm;
+  }
+  
+  page[size="80mm"] {
+    width: 80mm;
+    height: 140mm;
+  }
+  
+  @media print {
+    body, page {
+      text-align: center;
+    }
+
+    @page {
+      margin: 0;
+    }
+  
+  }

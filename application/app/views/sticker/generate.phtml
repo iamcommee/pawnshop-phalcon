@@ -1,0 +1,44 @@
+<html>
+<head>
+    <title>สร้างบาร์โค้ด : ประเสริฐรัตน์บริการ</title>
+    <link rel="shortcut icon" href="<?php echo $this->url->get('public/img/favicon.ico')?>" type='image/x-icon' />
+    <?php $this->assets->outputCss(); ?>
+    <?php $this->assets->outputJs(); ?>
+    <style>
+        @page {
+            size: A4
+        }
+
+        .sticker {
+            position: relative;
+            display: inline-block;
+            height: <?php echo $height; ?>;
+            width: <?php echo $width; ?>;
+            border: 1px solid rgba(0, 0, 0, 0.5);
+            margin: <?php echo $margin; ?>;
+        }
+
+    </style>
+</head>
+
+<body class="A4">
+    <section class="sheet padding-5mm" style="text-align:center;">
+        <form action="../print-sticker/<?php echo $page_size; ?>" method="POST">
+            <button type="submit" class="btn btn-custom btn-outline-primary x-rounded x-fixed-width" style="position:absolute; right:20px;">
+                พิมพ์
+            </button>
+            <p class="color-black" style="text-align: center; font-size:20px;">พิมพ์บาร์โค้ดขนาด <?php echo $page_size; ?></p>
+            <br>
+            <br>
+            <br>
+            <?php  for($i = 1; $i <= $size; $i++) { ?>  
+                <div class="sticker">
+                <input type="text" class="custom-input product" name="<?php echo 'product_information_'.$i ?>" value="">
+                <input type="hidden" class="agreement_number" name="<?php echo 'agreement_number_'.$i ?>" value="">
+                <input type="hidden" class="product_id" name="<?php echo 'product_id_'.$i ?>" value="">
+                </div>
+            <?php } ?>
+        </form>
+    </section>
+</body>
+<html>

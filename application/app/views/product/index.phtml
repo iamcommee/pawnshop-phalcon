@@ -1,0 +1,154 @@
+<div class="wrap">
+<div class="container-fluid">
+    <div class="row">
+        <div class="product_table_wrap col-md-12 d-none">
+        <form id="product_name_filter_form" class="d-flex justify-content-center" action="" method="POST">
+                <span class="col-1 w-100 text-center" style="top:10px;"> สินค้า </span>
+                <div class="col-2 w-100">
+                        <input type="text" id="product_name_filter" class="custom-select-input text-center" name="product_name_filter">
+                </div>
+                <span class="col-1 w-100 text-center"> <button type="button"
+                        class="btn btn-circle btn-outline-primary x-rounded btn-redo">&nbsp;&nbsp;&nbsp;<i class="fas fa-redo"></i>&nbsp;&nbsp;&nbsp;</button> </span>
+            </form>
+            <br>
+            <table id="product_table" class="table table-bordered table-hover" cellspacing="0" width="100%">
+                <thead class="text-center">
+                    <tr>
+                        <th>เลขที่สัญญา</th>
+                        <th>เลขที่สินค้า</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>ราคา</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tfoot class="text-center">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+                <tbody class="text-center"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+<div class="spinner">
+  <div class="rect1"></div>
+  <div class="rect2"></div>
+  <div class="rect3"></div>
+  <div class="rect4"></div>
+  <div class="rect5"></div>
+</div>
+<div class="modal fade" id="productModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">แก้ไข
+                    <!--  -->
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <form class="productForm" action="#">
+                    <input type="hidden" name="product_id" class="product_id" value="">
+                        <div class="form-group row">
+                            <label class="col-sm-6 col-form-label custom-label">สินค้า</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="product_name" class="product_name custom-input">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-6 col-form-label custom-label">ยี่ห้อ</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="product_brand" class="product_brand custom-input">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-6 col-form-label custom-label">รายละเอียด</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="product_detail" class="product_detail custom-input">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-6 col-form-label custom-label">ราคา</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="product_value" class="product_value custom-input">
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <button type="submit" class="confirm-edit-product-information btn x-rounded btn-custom btn-outline-primary w-100">
+                                    ยืนยันการแก้ไข
+                                </button>
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="button" class="confirm-delete-product btn x-rounded btn-custom btn-outline-primary w-100">
+                                    ลบสินค้า
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editMultiProductModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">แก้ไขหลายรายการ
+                    <!--  -->
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <form class="multiProductForm" action="edit-multi-product" method="POST">
+                    <input type="hidden" name="product_list" class="product_list" value="">
+                        <div class="form-group row">
+                            <label class="col-sm-6 col-form-label custom-label">สินค้า</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="product_name" class="product_name custom-input">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-6 col-form-label custom-label">ยี่ห้อ</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="product_brand" class="product_brand custom-input" value="-">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-6 col-form-label custom-label">รายละเอียด</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="product_detail" class="product_detail custom-input" value="-">
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <button type="submit" class="confirm-edit-multi-product-information btn x-rounded btn-custom btn-outline-primary w-100">
+                                    ยืนยันการแก้ไข
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?php $this->assets->outputJs();?>

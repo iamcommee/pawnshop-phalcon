@@ -1,0 +1,100 @@
+<div class="wrap">
+<div class="container-fluid">
+    <div class="row">
+        <div class="sold_out_table_wrap col-md-12 d-none">
+            <table id="sold_out_table" class="table table-bordered table-hover" cellspacing="0" width="100%">
+                <thead class="text-center">
+                    <tr>
+                        <th>เลขที่สัญญา</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>ราคา</th>
+                        <th>ราคาตั้งขาย</th>
+                        <th>ราคาขาย</th>
+                        <th>วันที่ขาย</th>
+                        <th>หมายเหตุ</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tfoot class="text-center">
+                  <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </tfoot>
+                <tbody class="text-center"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+<div class="spinner">
+  <div class="rect1"></div>
+  <div class="rect2"></div>
+  <div class="rect3"></div>
+  <div class="rect4"></div>
+  <div class="rect5"></div>
+</div>
+<!-- editSoldOutModal -->
+<div class="modal fade" id="editSoldOutModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">แก้ไข
+                    <!--  -->
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <form class="editSoldOutForm" action="#">
+                      <input type="hidden" name="account_id" class="account_id">
+                        <div class="form-group row">
+                          <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+                          <div class="col-sm-6">
+                            <input type="text" name="transaction_date" class="transaction_date custom-input" required>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-6 col-form-label custom-label">ราคาขาย</label>
+                          <div class="col-sm-6">
+                            <input type="text" name="sold_value" class="sold_value custom-input" required autofocus>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+                          <div class="col-sm-6">
+                            <input type="text" name="note" class="custom-input note">
+                          </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="form-group row">
+                        <div class="col-sm-6">
+                          <button type="submit" class="confirm-edit-sold-out-transaction btn btn x-rounded btn-custom btn-outline-primary w-100">
+                            ยืนยันการแก้ไข
+                        </button>
+                        </div>
+                        <div class="col-sm-6">
+                          <button type="button" class="confirm-delete-sold-out-transaction btn x-rounded btn-custom btn-outline-primary w-100">
+                            ยกเลิกการขาย
+                          </button>
+                        </div>
+                        </div>
+                  </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php $this->assets->outputJs(); ?>

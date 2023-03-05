@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Cache-control" content="no-store, no-cache, must-revalidate">
+    <link rel="shortcut icon" href="<?php echo $this->url->get('public/img/favicon.ico')?>" type='image/x-icon' />
+
+    <?php echo $this->tag->getTitle(); ?>
+
+    <?php 
+   $this->assets->outputCss("datatable");
+   $this->assets->outputCss("style"); 
+   $this->assets->outputCss("jquery_ui"); 
+   $this->assets->outputCss("select2");
+   $this->assets->outputCss("yadcf");
+   $this->assets->outputCss("bootstrap"); 
+   $this->assets->outputCss("datepicker"); 
+   $this->assets->outputCss("fontawesome"); 
+   $this->assets->outputCss('mCustomScrollbar');
+   $this->assets->outputCss('highchart');
+
+   $this->assets->outputJs("jquery"); 
+   $this->assets->outputJs("jquery_ui"); 
+   $this->assets->outputJs("bootstrap"); 
+   $this->assets->outputJs("datepicker"); 
+   $this->assets->outputJs("datatable");
+   $this->assets->outputJs("select2");
+   $this->assets->outputJs("yadcf");
+   $this->assets->outputJs('mCustomScrollbar');
+   $this->assets->outputJs('highchart');
+   $this->assets->outputJs("style");
+   ?>
+</head>
+
+<body>
+    <!-- Start Sidebar Here -->
+    <nav id="sidebar">
+        <!-- <div class="sidebar-header"> -->
+        <!-- Logo -->
+        <!-- </div> -->
+        <?php if($this->session->get("role") == 'administrator'){ ?>
+        <ul class="list-unstyled components">
+            <li>
+                <a href="<?php echo $this->url->get('main/')?>"> <i class="fas fa-home"></i> &nbsp;&nbsp; หน้าแรก</a>
+                <a href="<?php echo $this->url->get('agreement/')?>"> <i class="fas fa-file-signature"></i> &nbsp;&nbsp;
+                    ทำสัญญา</a>
+                <a href="<?php echo $this->url->get('payment/')?>"> <i class="fas fa-hand-holding-usd"></i> &nbsp;&nbsp;
+                    ต่อดอก/ไถ่คืน</a>
+                <a href="#stickermenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-barcode"></i>
+                    &nbsp;&nbsp; พิมพ์บาร์โค้ด </a>
+                <ul id="stickermenu" class="collapse list-unstyled">
+                    <li>
+                        <a href="<?php echo $this->url->get('sticker/generate/A5')?>" target="_blank"> &nbsp;&nbsp;&nbsp;&nbsp; - ขนาด A5</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->url->get('sticker/generate/A10')?>" target="_blank"> &nbsp;&nbsp;&nbsp;&nbsp; - ขนาด A10 </a>
+                    </li>
+                </ul>
+                <a href="#listmenu" data-toggle="collapse" aria-expanded="false"> <i class="fas fa-list-ul"></i>
+                    &nbsp;&nbsp; รายการ </a>
+                <ul id="listmenu" class="collapse list-unstyled">
+                    <li>
+                        <a href="<?php echo $this->url->get('list/')?>"> &nbsp;&nbsp;&nbsp;&nbsp; - รายการทั้งหมด</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->url->get('waiting/')?>"> &nbsp;&nbsp;&nbsp;&nbsp; -
+                            รายการหลุด</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->url->get('sale/')?>"> &nbsp;&nbsp;&nbsp;&nbsp; -
+                            รายการตั้งขาย</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->url->get('separate_sale/')?>"> &nbsp;&nbsp;&nbsp;&nbsp; -
+                            รายการแยกขาย</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->url->get('deposit/')?>"> &nbsp;&nbsp;&nbsp;&nbsp; -
+                            รายการมัดจำ</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->url->get('sold_out/')?>"> &nbsp;&nbsp;&nbsp;&nbsp; -
+                            รายการขาย</a>
+                    </li>
+                </ul>
+                <a href="<?php echo $this->url->get('product/')?>"> <i class="fas fa-cubes"></i> &nbsp;&nbsp; รายการสินค้า</a>
+                <a href="<?php echo $this->url->get('customer/')?>"> <i class="fas fa-user"></i> &nbsp;&nbsp; รายชื่อลูกค้า</a>
+                <a href="<?php echo $this->url->get('account/')?>"> <i class="fas fa-book"></i> &nbsp;&nbsp; บัญชีรายรับรายจ่าย</a>
+                <a href="<?php echo $this->url->get('account/daily')?>"> <i class="fas fa-book"></i> &nbsp;&nbsp; บัญชีรายรับรายจ่ายประจำวัน</a>
+                <a href="<?php echo $this->url->get('chart/')?>"> <i class="far fa-chart-bar"></i> &nbsp;&nbsp; กราฟ</a>
+                <a href="<?php echo $this->url->get('setting/')?>"> <i class="fas fa-cog"></i> &nbsp;&nbsp; ตั้งค่า</a>
+                <a href="<?php echo $this->url->get('index/logout/')?>"> <i class="fas fa-sign-out-alt"></i> &nbsp;&nbsp; ออกจากระบบ</a>
+            </li>
+        </ul>
+        <?php } else { ?>
+        <ul class="list-unstyled components">
+            <li>
+                <a href="<?php echo $this->url->get('main/')?>"> <i class="fas fa-home"></i> &nbsp;&nbsp; หน้าแรก</a>
+                <a href="#stickermenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-barcode"></i>
+                    &nbsp;&nbsp; พิมพ์บาร์โค้ด </a>
+                <ul id="stickermenu" class="collapse list-unstyled">
+                    <li>
+                        <a href="<?php echo $this->url->get('sticker/generate/A5')?>" target="_blank"> &nbsp;&nbsp;&nbsp;&nbsp; - ขนาด A5</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->url->get('sticker/generate/A10')?>" target="_blank"> &nbsp;&nbsp;&nbsp;&nbsp; - ขนาด A10 </a>
+                    </li>
+                </ul>
+                <a href="#listmenu" data-toggle="collapse" aria-expanded="false"> <i class="fas fa-list-ul"></i>
+                    &nbsp;&nbsp; รายการ </a>
+                <ul id="listmenu" class="collapse list-unstyled">
+                    <li>
+                        <a href="<?php echo $this->url->get('list/')?>"> &nbsp;&nbsp;&nbsp;&nbsp; - รายการทั้งหมด</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->url->get('waiting/')?>"> &nbsp;&nbsp;&nbsp;&nbsp; -
+                            รายการหลุด</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->url->get('sale/')?>"> &nbsp;&nbsp;&nbsp;&nbsp; -
+                            รายการตั้งขาย</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->url->get('separate_sale/')?>"> &nbsp;&nbsp;&nbsp;&nbsp; -
+                            รายการแยกขาย</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->url->get('deposit/')?>"> &nbsp;&nbsp;&nbsp;&nbsp; -
+                            รายการมัดจำ</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->url->get('sold_out/')?>"> &nbsp;&nbsp;&nbsp;&nbsp; -
+                            รายการขาย</a>
+                    </li>
+                </ul>
+                <a href="<?php echo $this->url->get('product/')?>"> <i class="fas fa-cubes"></i> &nbsp;&nbsp; รายการสินค้า</a>
+                <a href="<?php echo $this->url->get('index/logout/')?>"> <i class="fas fa-sign-out-alt"></i> &nbsp;&nbsp; ออกจากระบบ</a>
+            </li>
+        </ul>
+        <?php } ?>
+    </nav>
+     <!-- End Sidebar Here -->
+    <!-- Page Content  -->
+    <div id="content">
+        <!-- Start Navbar Here -->
+        <nav class="navbar no-border bg-primary">
+            <div class="container-fluid">
+                <!-- <div class="navbar-brand"></div> -->
+                <button type="button" id="sidebar-collapse" class="btn btn-primary no-border">
+                    <i class="sidebar-collapse fas fa-align-left"></i> 
+                </button>  
+                <?php if($this->session->get("role") == 'administrator'){ ?>
+                    <form class="custom-search-form" style="width:60% !important;" action="<?php echo $this->url->get('payment/process')?>" method="POST">
+                        <input type="text" class="custom-search-input" name="number" id="number" placeholder="ค้นหาสัญญา ด้วยเลขที่สัญญาหรือเลขที่บัตรประชาชน" autocomplete="off">
+                    </form>
+                    <button class="btn btn-primary no-border custom-search-submit-button"><i class="fas fa-search"></i></button> 
+                <?php } ?>  
+            </div>
+        </nav>
+        <!-- End Navbar Here -->
+        <!-- Start Content Here -->
+        <?php echo $this->getContent(); ?>
+        <!-- End Content Here -->
+        <!-- Start Footer Here -->
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                <!-- <span><i class="far fa-copyright"></i> commee. All rights reserved</span> -->
+                </div>
+            </div>
+        </footer>
+        <!-- End Footer Here -->
+    </div>
+
+    <div class="overlay-bg"></div>
+</body>
+
+</html>

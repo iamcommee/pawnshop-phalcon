@@ -1,0 +1,40 @@
+<html>
+
+<head>
+    <?php echo $this->tag->getTitle(); ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='shortcut icon' href="<?php echo $this->url->get('public/img/favicon.ico')?>" type='image/x-icon' />
+    <?php $this->assets->outputCss(); ?>
+</head>
+
+<body class="bg">
+
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center text-center">
+            <form class="col-11 col-sm-5" action="index/authentication" method="post" >
+                <div class="text-center">
+                    <h1 class="color-black"><?php echo $storename; ?></h1>    
+                    <br>
+                    <?php $this->flashSession->output() ?>
+                </div>
+                <br>
+                <input class="custom-input w-75" type="text" name="username" id="username" placeholder="ชื่อผู้ใช้" autofocus />
+                <input class="custom-input w-75" type="password" name="password" id="password" placeholder="รหัสผ่าน" />
+                <br>
+                <br>
+                <button class="btn btn-custom btn-outline-primary x-rounded w-75">
+                    <b>เข้าสู่ระบบ</b>
+                </button>
+                <br>
+                <br>
+                <div class="coppyright text-center">
+                    <p><i class="far fa-copyright"></i> commee. All rights reserved</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+<html>
+<?php $this->assets->outputJs(); ?>

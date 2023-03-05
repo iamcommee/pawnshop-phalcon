@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    <title>ปริ้นบาร์โค้ด : ประเสริฐรัตน์บริการ</title>
+    <link rel="shortcut icon" href="<?php echo $this->url->get('public/img/favicon.ico')?>" type='image/x-icon' />
+    <?php $this->assets->outputCss(); ?>
+    <style>
+        @page {
+            size: A4;
+            margin-top: -16.5;
+        }
+
+        .sticker {
+            position: relative;
+            display: inline-block;
+            height: <?php echo $height; ?>;
+            width: <?php echo $width; ?>;
+            /* border: 1px solid black; */
+            margin: <?php echo $margin; ?>;
+        }
+
+        .barcode {
+            position: <?php echo $position; ?>;
+            width: <?php echo $barcode_width; ?>;
+            height: <?php echo $barcode_height; ?>;
+            left: <?php echo $barcode_left; ?>;
+            top: <?php echo $barcode_top; ?>;
+        }
+
+        .agreement_number {
+            position: <?php echo $position; ?>;
+            right: <?php echo $agreement_number_text_right; ?>;
+            top: <?php echo $agreement_number_text_top; ?>;
+            /* default 36px */
+            font-size: <?php echo $agreement_number_text_font_size; ?>; 
+        }
+
+        .product_information {
+            position: <?php echo $position; ?>;
+            right: <?php echo $product_text_right; ?>;
+            top: <?php echo $product_text_top; ?>;
+            font-size: <?php echo $product_text_font_size; ?>;
+        }
+    </style>
+</head>
+
+<body class="A4">
+    <section class="sheet padding-5mm" style="text-align:center;">
+    <?php 
+    
+    for($i = 1 ; $i <= $size ; $i++){
+        if(${"product_id_$i"}){ 
+    ?>
+            <div class="sticker">
+            <img class="barcode" src="<?php echo $this->url->get('public/barcodeimg/'.${"product_id_$i"}.'.svg')?>">
+            <span class="product_information">
+                <?php echo ${"product_information_$i"}; ?>
+            </span>
+            <span class="agreement_number">
+                <?php echo ${"agreement_number_$i"}; ?>
+            </span>
+            </div>
+    <?php 
+        } else { 
+    ?>
+            <div class="sticker">
+            <span class="product_information"></span>
+            <span class="agreement_number"></span>
+            </div>
+    <?php
+        } 
+    }
+    ?>
+    </section>
+</body>
+<html>
+<script>
+
+</script>

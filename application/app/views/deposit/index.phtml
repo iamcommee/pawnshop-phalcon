@@ -1,0 +1,95 @@
+<div class="wrap">
+<div class="container-fluid">
+    <div class="row">
+        <div class="deposit_table_wrap col-md-12 d-none">
+            <table id="deposit_table" class="table table-bordered" cellspacing="0" width="100%">
+                <thead class="text-center">
+                    <tr>
+                        <th>เลขที่สัญญา</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>ราคาขาย</th>
+                        <th>ยอดรวมมัดจำ</th>
+                        <th>วันที่ทำรายการล่าสุด</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tfoot class="text-center">
+                  <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th></th>
+                    <th></th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </tfoot>
+                <tbody class="text-center"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+<div class="spinner">
+  <div class="rect1"></div>
+  <div class="rect2"></div>
+  <div class="rect3"></div>
+  <div class="rect4"></div>
+  <div class="rect5"></div>
+</div>
+<!-- depositProductModal -->
+<div class="modal fade" id="depositModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form class="depositForm" action="#">
+            <input type="hidden" name="account_id" class="account_id">
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">วันที่ทำรายการ</label>
+              <div class="col-sm-6">
+                <input type="text" name="transaction_date" class="custom-input transaction_date">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">มัดจำ</label>
+              <div class="col-sm-6">
+                <input type="text" name="deposit_value" class="custom-input deposit_value" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-6 col-form-label custom-label">หมายเหตุ</label>
+              <div class="col-sm-6">
+                <input type="text" name="note" class="custom-input note">
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="form-group row">
+            <div class="col-sm-6">
+                <button type="submit" class="confirm-edit-deposit-transaction btn btn-custom btn-outline-primary x-rounded  w-100">
+                ยืนยันการแก้ไข
+            </button>
+            </div>
+            <div class="col-sm-6">
+                <button type="button" class="confirm-delete-deposit-transaction btn x-rounded btn-custom btn-outline-primary w-100">
+                ลบรายการมัดจำ
+                </button>
+            </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<?php $this->assets->outputJs(); ?>
+
+

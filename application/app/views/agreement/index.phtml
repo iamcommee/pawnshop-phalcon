@@ -1,0 +1,126 @@
+<div class="wrap">
+<div class="container">
+    <form class="agreementForm" action="create" method="POST">
+        <div class="row">
+            <div class="col-12 col-sm-12 ">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <span class="color-black" style="font-size:22px;">สัญญาซื้อ-ขายฝาก</span>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-custom btn-outline-primary x-rounded x-fixed-width">
+                            บันทึก</button>
+                        <button type="reset" class="btn btn-custom btn-outline-primary x-rounded x-fixed-width">
+                            ยกเลิก </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <hr>
+        <div class="row justify-content-center align-items-center">
+
+            <div class="col-12 col-sm-6">
+                <div class="text-center">
+                    <img id="idcard_image" class="x-sm-rounded" style="width:80%;" src="../public/img/blank.jpg">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6">
+                <br>
+                <div class="d-flex justify-content-between">
+                    <div class="custom-control custom-radio custom-control-inline"ß>
+                        <input type="radio" id="radio_1" name="status" class="custom-control-input" value="ฝาก" checked>
+                        <label class="custom-control-label" for="radio_1"> สัญญาฝาก </label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="radio_2" name="status" class="custom-control-input" value="ซื้อเข้า">
+                        <label class="custom-control-label" for="radio_2"> สัญญาซื้อเข้า </label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="radio_3" name="status" class="custom-control-input" value="ซื้อเข้าของเก่า">
+                        <label class="custom-control-label" for="radio_3"> สัญญาซื้อเข้าของเก่า </label>
+                    </div>
+                </div>
+                <hr>
+                <input type="number" class="custom-input" name="agreement_number" id="agreement_number" placeholder="เลขที่สัญญา"
+                    value="" required>
+                <div class="form-row align-items-center">
+                    <div class="col-5 w-100">
+                        <input type="text" class="custom-input" id="start_date" name="start_date" placeholder="วันคิดดอก"
+                        required>
+                    </div>
+                    <span class="col-2 w-100 text-center"> ถึง </span>
+                    <div class="col-5 w-100">
+                        <input type="text" class="custom-input" id="end_date" name="end_date" placeholder="วันส่งดอก"
+                        required>
+                    </div>
+                </div>
+                <br>
+                <div class="form-row align-items-center">
+                    <div class="col-10 w-100">
+                        <div class="custom-file">
+                            <input type="hidden" class="customerimg" name="customerimg">
+                            <input type="file" class="custom-file-input">
+                            <label class="custom-file-label">รูปภาพลูกค้า...</label>
+                        </div>
+                    </div>
+                    <span class="col-2 w-100 text-center"><button type="button" class="btn btn-circle btn-outline-primary x-rounded load-last-image-button">&nbsp;&nbsp;&nbsp;<i class="fas fa-sync"></i>&nbsp;&nbsp;&nbsp;</button> </span>
+                </div>
+                <div class="form-row align-items-center">
+                    <div class="col-10 w-100">
+                        <input type="text" class="custom-input" name="idcard" id="idcard" placeholder="เลขที่บัตรประชาชน"
+                        autofocus required>
+                    </div>
+                    <span class="col-2 w-100 text-center" style="position:relative; top:20px;"><button type="button" class="btn btn-circle btn-outline-primary x-rounded search-button">&nbsp;&nbsp;&nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;&nbsp;</button> </span>
+                </div>
+
+                <input type="text" class="custom-input" name="firstname" id="firstname" placeholder="ชื่อ">
+                <input type="text" class="custom-input" name="lastname" id="lastname" placeholder="สกุล">
+
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <!-- <hr> -->
+        <br>
+
+        <div class="row">
+            <div class="col-12 col-sm-12">
+                <div class="table-responsive-xl">
+                    <table class="table table-bordered agreement-table">
+                        <thead class="text-center">
+                            <tr>
+                                <th style="padding:11px; color:rgba(0, 0, 0, 0.5);">สินค้า</th>
+                                <th style="padding:11px; color:rgba(0, 0, 0, 0.5);"">ยี่ห้อ</th>
+                                <th style="padding:11px; color:rgba(0, 0, 0, 0.5);"">รายละเอียด</th>
+                                <th style="padding:11px; color:rgba(0, 0, 0, 0.5);"">ราคา</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <?php for($i = 1;$i <= 6;$i++): ?>
+                            <tr class="agerement_input_<?php echo $i; ?>">
+                                <td>
+                                    <input type="text" class="form-control no-border text-center product_name" name="product_name[]" <?php if($i==1){ echo 'required'; } ?> >
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control no-border text-center product_brand" name="product_brand[]">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control no-border text-center product_detail" name="product_detail[]">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control no-border text-center" name="product_value[]" <?php if($i==1){ echo 'required'; } ?> >
+                                </td>
+                            </tr>
+                            <?php endfor; ?>
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+<?php $this->assets->outputJs(); ?>
