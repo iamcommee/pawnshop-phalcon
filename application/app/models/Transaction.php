@@ -87,7 +87,7 @@ class Transaction extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->setSchema("pawn_db_new");
+        $this->setSchema("pawnshop");
         $this->setSource("transaction");
         $this->belongsTo('uuid', '\Account', 'uuid', ['alias' => 'account']);
         $this->belongsTo('product_id', '\Product', 'product_id', ['alias' => 'product']);

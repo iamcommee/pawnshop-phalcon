@@ -131,11 +131,11 @@ $di->setShared('db_restore', function () {
 
     $class = 'Phalcon\Db\Adapter\Pdo\\' . $config->database->adapter;
     $params = [
-        'host'        => '172.18.0.1',
-        'port'        => '3306',
-        'username'    => 'root',
-        'password'    => 'pawnshop_root_password',
-        'dbname'      => 'pawn_db_new_v1',
+        'host'        => '',
+        'port'        => '',
+        'username'    => '',
+        'password'    => '',
+        'dbname'      => '',
         'charset'     => 'utf8',
     ];
 

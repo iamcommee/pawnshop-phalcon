@@ -61,7 +61,7 @@ class Account extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->setSchema("pawn_db_new");
+        $this->setSchema("pawnshop");
         $this->setSource("account");
         $this->hasMany(
             'uuid',
